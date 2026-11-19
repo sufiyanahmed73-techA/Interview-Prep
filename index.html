@@ -1,0 +1,1970 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interview Prep Master – Finance & IB Edition</title>
+<style>
+  :root {
+    --bg: #0a0f1e;
+    --surface: #111827;
+    --surface2: #1f2937;
+    --surface3: #374151;
+    --border: #374151;
+    --text: #f9fafb;
+    --text-secondary: #9ca3af;
+    --accent: #3b82f6;
+    --accent2: #10b981;
+    --accent3: #8b5cf6;
+    --accent4: #f59e0b;
+    --accent5: #ef4444;
+    --accent6: #06b6d4;
+    --accent7: #ec4899;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  /* ===== HEADER ===== */
+  .header {
+    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .logo { display: flex; align-items: center; gap: 10px; }
+  .logo-icon { font-size: 24px; }
+  .logo-text { font-size: 18px; font-weight: 700; background: linear-gradient(90deg, #60a5fa, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .nav-tabs { display: flex; gap: 4px; }
+  .nav-tab {
+    padding: 8px 16px; border-radius: 8px; cursor: pointer;
+    font-size: 14px; font-weight: 500; transition: all 0.2s;
+    border: 1px solid transparent; color: var(--text-secondary);
+    background: none;
+  }
+  .nav-tab:hover { color: var(--text); background: var(--surface2); }
+  .nav-tab.active { color: var(--text); background: var(--accent); border-color: var(--accent); }
+  .header-right { display: flex; gap: 8px; align-items: center; }
+  .badge { background: var(--accent); color: white; border-radius: 20px; padding: 2px 10px; font-size: 12px; font-weight: 600; }
+  /* ===== MAIN LAYOUT ===== */
+  .main { display: flex; flex: 1; overflow: hidden; height: calc(100vh - 64px); }
+  .sidebar {
+    width: 280px; background: var(--surface); border-right: 1px solid var(--border);
+    overflow-y: auto; flex-shrink: 0;
+    display: flex; flex-direction: column;
+  }
+  .sidebar-search { padding: 16px; border-bottom: 1px solid var(--border); }
+  .search-input {
+    width: 100%; background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 8px; padding: 10px 14px; color: var(--text); font-size: 14px;
+    outline: none;
+  }
+  .search-input:focus { border-color: var(--accent); }
+  .search-input::placeholder { color: var(--text-secondary); }
+  .sidebar-content { flex: 1; overflow-y: auto; padding: 8px; }
+  .subject-group { margin-bottom: 4px; }
+  .subject-header {
+    display: flex; align-items: center; gap: 10px; padding: 10px 12px;
+    border-radius: 8px; cursor: pointer; transition: all 0.2s;
+    font-weight: 600; font-size: 14px;
+  }
+  .subject-header:hover { background: var(--surface2); }
+  .subject-header.active { background: var(--surface2); }
+  .subject-icon { font-size: 18px; }
+  .subject-name { flex: 1; }
+  .subject-count { font-size: 11px; color: var(--text-secondary); background: var(--surface3); padding: 2px 6px; border-radius: 10px; }
+  .subject-chevron { font-size: 10px; color: var(--text-secondary); transition: transform 0.2s; }
+  .subject-header.expanded .subject-chevron { transform: rotate(90deg); }
+  .topics-list { padding-left: 8px; }
+  .topic-item {
+    display: flex; align-items: center; gap: 8px; padding: 8px 12px;
+    border-radius: 6px; cursor: pointer; transition: all 0.2s;
+    font-size: 13px; color: var(--text-secondary);
+  }
+  .topic-item:hover { background: var(--surface2); color: var(--text); }
+  .topic-item.active { background: rgba(59,130,246,0.15); color: var(--accent); font-weight: 500; }
+  .topic-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border); flex-shrink: 0; }
+  .topic-item.active .topic-dot { background: var(--accent); }
+  /* ===== CONTENT AREA ===== */
+  .content { flex: 1; overflow-y: auto; display: flex; flex-direction: column; }
+  /* ===== PAGES ===== */
+  .page { display: none; padding: 24px; flex: 1; }
+  .page.active { display: block; }
+  /* ===== DASHBOARD ===== */
+  .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; margin-bottom: 24px; }
+  .stat-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+    padding: 20px; display: flex; align-items: center; gap: 16px;
+  }
+  .stat-icon { font-size: 32px; }
+  .stat-info { flex: 1; }
+  .stat-value { font-size: 28px; font-weight: 700; }
+  .stat-label { color: var(--text-secondary); font-size: 13px; margin-top: 2px; }
+  .section-title { font-size: 20px; font-weight: 700; margin-bottom: 16px; }
+  .subject-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+  .subject-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+    padding: 20px; cursor: pointer; transition: all 0.2s;
+  }
+  .subject-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .subject-card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+  .subject-card-icon { font-size: 32px; }
+  .subject-card-name { font-size: 16px; font-weight: 700; }
+  .subject-card-desc { color: var(--text-secondary); font-size: 13px; line-height: 1.5; margin-bottom: 16px; }
+  .subject-card-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .meta-pill {
+    background: var(--surface2); border-radius: 20px; padding: 3px 10px;
+    font-size: 11px; color: var(--text-secondary);
+  }
+  .progress-bar { height: 4px; background: var(--surface3); border-radius: 2px; margin-top: 12px; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 2px; background: var(--accent); transition: width 0.3s; }
+  /* ===== Q&A VIEWER ===== */
+  .topic-header { margin-bottom: 24px; }
+  .topic-title { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
+  .topic-meta { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  .diff-badge, .freq-badge {
+    padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;
+  }
+  .diff-Beginner { background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid rgba(16,185,129,0.3); }
+  .diff-Intermediate { background: rgba(245,158,11,0.15); color: #f59e0b; border: 1px solid rgba(245,158,11,0.3); }
+  .diff-Advanced { background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid rgba(239,68,68,0.3); }
+  .freq-badge { background: rgba(139,92,246,0.15); color: #a78bfa; border: 1px solid rgba(139,92,246,0.3); }
+  .question-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+    margin-bottom: 12px; overflow: hidden; transition: all 0.2s;
+  }
+  .question-card:hover { border-color: var(--surface3); }
+  .question-header {
+    padding: 16px 20px; cursor: pointer; display: flex;
+    align-items: flex-start; gap: 12px;
+  }
+  .q-number { background: var(--surface2); border-radius: 6px; padding: 2px 8px; font-size: 12px; font-weight: 700; color: var(--text-secondary); flex-shrink: 0; margin-top: 2px; }
+  .q-text { font-size: 15px; font-weight: 500; line-height: 1.4; flex: 1; }
+  .q-toggle { font-size: 12px; color: var(--text-secondary); flex-shrink: 0; margin-top: 4px; transition: transform 0.2s; }
+  .question-card.open .q-toggle { transform: rotate(180deg); }
+  .answer-section {
+    padding: 0 20px; max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s;
+  }
+  .question-card.open .answer-section { max-height: 1000px; padding: 0 20px 20px; }
+  .answer-content {
+    background: var(--surface2); border-radius: 8px; padding: 16px;
+    font-size: 14px; line-height: 1.7; color: var(--text-secondary);
+    border-left: 3px solid var(--accent);
+  }
+  .answer-content strong { color: var(--text); }
+  /* ===== JD MATCHER ===== */
+  .jd-container { max-width: 900px; }
+  .jd-title { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
+  .jd-subtitle { color: var(--text-secondary); margin-bottom: 24px; }
+  .jd-input-area {
+    background: var(--surface); border: 2px dashed var(--border); border-radius: 12px;
+    padding: 24px; margin-bottom: 20px; transition: border-color 0.2s;
+  }
+  .jd-input-area:hover { border-color: var(--accent); }
+  .jd-textarea {
+    width: 100%; background: transparent; border: none; color: var(--text);
+    font-size: 14px; line-height: 1.6; resize: vertical; min-height: 180px;
+    outline: none; font-family: inherit;
+  }
+  .jd-textarea::placeholder { color: var(--text-secondary); }
+  .jd-actions { display: flex; gap: 12px; margin-bottom: 24px; }
+  .btn {
+    padding: 10px 20px; border-radius: 8px; cursor: pointer; font-size: 14px;
+    font-weight: 600; border: none; transition: all 0.2s;
+  }
+  .btn-primary { background: var(--accent); color: white; }
+  .btn-primary:hover { background: #2563eb; }
+  .btn-secondary { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
+  .btn-secondary:hover { background: var(--surface3); }
+  .results-grid { display: grid; gap: 16px; }
+  .result-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px;
+  }
+  .result-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+  .relevance-bar { flex: 1; height: 8px; background: var(--surface3); border-radius: 4px; overflow: hidden; }
+  .relevance-fill { height: 100%; border-radius: 4px; transition: width 0.5s; }
+  .relevance-high { background: var(--accent2); }
+  .relevance-medium { background: var(--accent4); }
+  .relevance-low { background: var(--surface3); }
+  .prob-score { font-size: 20px; font-weight: 700; min-width: 48px; text-align: right; }
+  .result-topics { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+  .topic-pill {
+    background: var(--surface2); border-radius: 6px; padding: 4px 10px;
+    font-size: 12px; cursor: pointer; transition: all 0.2s;
+    border: 1px solid var(--border);
+  }
+  .topic-pill:hover { border-color: var(--accent); color: var(--accent); }
+  /* ===== DAILY TAB ===== */
+  .daily-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 768px) { .daily-grid { grid-template-columns: 1fr; } }
+  .trivia-card, .news-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 20px;
+  }
+  .trivia-title { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+  .trivia-category { font-size: 12px; color: var(--accent); font-weight: 600; margin-bottom: 16px; }
+  .trivia-q { font-size: 15px; line-height: 1.5; margin-bottom: 16px; font-weight: 500; }
+  .trivia-options { display: grid; gap: 8px; }
+  .trivia-opt {
+    background: var(--surface2); border: 1px solid var(--border); border-radius: 8px;
+    padding: 10px 14px; cursor: pointer; font-size: 13px; transition: all 0.2s;
+    text-align: left;
+  }
+  .trivia-opt:hover { border-color: var(--accent); background: rgba(59,130,246,0.1); }
+  .trivia-opt.correct { background: rgba(16,185,129,0.15); border-color: #10b981; color: #10b981; }
+  .trivia-opt.wrong { background: rgba(239,68,68,0.15); border-color: #ef4444; color: #ef4444; }
+  .trivia-explanation { background: var(--surface2); border-radius: 8px; padding: 12px; font-size: 13px; line-height: 1.6; color: var(--text-secondary); border-left: 3px solid var(--accent2); display: none; margin-top: 12px; }
+  .trivia-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 16px; }
+  .trivia-counter { font-size: 12px; color: var(--text-secondary); }
+  .news-title { font-size: 16px; font-weight: 700; margin-bottom: 16px; }
+  .news-item { border-bottom: 1px solid var(--border); padding: 12px 0; }
+  .news-item:last-child { border-bottom: none; }
+  .news-item-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .news-item-cat { font-size: 11px; color: var(--accent); font-weight: 600; margin-bottom: 6px; }
+  .news-item-summary { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  .knowledge-checks { margin-top: 20px; }
+  .kc-title { font-size: 16px; font-weight: 700; margin-bottom: 16px; }
+  .kc-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+  .kc-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+    padding: 16px; cursor: pointer; transition: all 0.2s;
+  }
+  .kc-card:hover { border-color: var(--accent); }
+  .kc-icon { font-size: 24px; margin-bottom: 8px; }
+  .kc-name { font-size: 13px; font-weight: 600; }
+  .kc-count { font-size: 11px; color: var(--text-secondary); margin-top: 4px; }
+  /* ===== PRACTICE MODE ===== */
+  .practice-container { max-width: 700px; margin: 0 auto; }
+  .practice-header { text-align: center; margin-bottom: 32px; }
+  .practice-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
+    padding: 32px; margin-bottom: 20px; text-align: center;
+  }
+  .practice-q { font-size: 18px; font-weight: 600; line-height: 1.5; margin-bottom: 24px; }
+  .reveal-btn {
+    background: var(--accent); color: white; border: none; border-radius: 10px;
+    padding: 12px 32px; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s;
+  }
+  .reveal-btn:hover { background: #2563eb; }
+  .practice-answer { display: none; text-align: left; margin-top: 24px; }
+  .practice-answer.show { display: block; }
+  .practice-answer-box {
+    background: var(--surface2); border-radius: 10px; padding: 20px;
+    font-size: 14px; line-height: 1.7; color: var(--text-secondary);
+    border-left: 4px solid var(--accent2); margin-bottom: 20px;
+  }
+  .rating-buttons { display: flex; gap: 10px; justify-content: center; }
+  .rate-btn {
+    padding: 10px 20px; border-radius: 8px; cursor: pointer;
+    font-size: 13px; font-weight: 600; border: none; transition: all 0.2s;
+  }
+  .rate-easy { background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid rgba(16,185,129,0.3); }
+  .rate-medium { background: rgba(245,158,11,0.15); color: #f59e0b; border: 1px solid rgba(245,158,11,0.3); }
+  .rate-hard { background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid rgba(239,68,68,0.3); }
+  .rate-btn:hover { opacity: 0.8; transform: scale(1.05); }
+  .practice-controls { display: flex; justify-content: space-between; align-items: center; }
+  .practice-progress { font-size: 13px; color: var(--text-secondary); }
+  /* ===== SETTINGS ===== */
+  .settings-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+  .setting-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
+  .setting-title { font-size: 15px; font-weight: 600; margin-bottom: 12px; }
+  .setting-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border); }
+  .setting-row:last-child { border-bottom: none; }
+  .setting-label { font-size: 13px; color: var(--text-secondary); }
+  .toggle {
+    width: 44px; height: 24px; background: var(--surface3); border-radius: 12px;
+    cursor: pointer; position: relative; transition: background 0.2s;
+  }
+  .toggle.on { background: var(--accent); }
+  .toggle::after {
+    content: ''; position: absolute; width: 18px; height: 18px; border-radius: 50%;
+    background: white; top: 3px; left: 3px; transition: transform 0.2s;
+  }
+  .toggle.on::after { transform: translateX(20px); }
+  /* ===== TOAST ===== */
+  .toast {
+    position: fixed; bottom: 24px; right: 24px; background: var(--surface2);
+    border: 1px solid var(--border); border-radius: 10px; padding: 12px 20px;
+    font-size: 14px; z-index: 1000; opacity: 0; transition: opacity 0.3s;
+    pointer-events: none;
+  }
+  .toast.show { opacity: 1; }
+  /* ===== SCROLLBAR ===== */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 768px) {
+    .sidebar { width: 100%; max-width: 280px; }
+    .main { flex-direction: column; }
+  }
+  /* ===== QUICK FILTERS ===== */
+  .filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+  .filter-btn {
+    padding: 6px 14px; border-radius: 20px; cursor: pointer; font-size: 12px;
+    font-weight: 500; border: 1px solid var(--border); background: var(--surface2);
+    color: var(--text-secondary); transition: all 0.2s;
+  }
+  .filter-btn:hover, .filter-btn.active { background: rgba(59,130,246,0.15); border-color: var(--accent); color: var(--accent); }
+  /* ===== EMPTY STATE ===== */
+  .empty-state { text-align: center; padding: 60px 20px; color: var(--text-secondary); }
+  .empty-state-icon { font-size: 48px; margin-bottom: 16px; }
+  .empty-state-title { font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+  /* ===== MATCH RESULTS ===== */
+  .match-role-label { font-size: 18px; font-weight: 700; }
+  .match-desc { font-size: 13px; color: var(--text-secondary); margin-top: 4px; }
+  .detected-keywords { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0; }
+  .keyword-pill { background: rgba(139,92,246,0.15); border: 1px solid rgba(139,92,246,0.3); color: #a78bfa; border-radius: 12px; padding: 2px 10px; font-size: 11px; }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+  <div class="logo">
+    <span class="logo-icon">📚</span>
+    <span class="logo-text">Interview Prep Master</span>
+  </div>
+  <nav class="nav-tabs">
+    <button class="nav-tab active" onclick="showPage('dashboard')">🏠 Dashboard</button>
+    <button class="nav-tab" onclick="showPage('questions')">📋 Q&A Bank</button>
+    <button class="nav-tab" onclick="showPage('practice')">🎯 Practice</button>
+    <button class="nav-tab" onclick="showPage('jdmatch')">🔍 JD Matcher</button>
+    <button class="nav-tab" onclick="showPage('daily')">📰 Daily</button>
+  </nav>
+  <div class="header-right">
+    <span class="badge" id="progress-badge">0% Done</span>
+  </div>
+</header>
+
+<!-- Main Content -->
+<div class="main">
+  <!-- Sidebar (Q&A page) -->
+  <aside class="sidebar" id="sidebar" style="display:none;">
+    <div class="sidebar-search">
+      <input type="text" class="search-input" placeholder="🔎 Search questions..." id="search-input" oninput="filterQuestions()">
+    </div>
+    <div class="sidebar-content" id="sidebar-content"></div>
+  </aside>
+
+  <!-- Content Pages -->
+  <main class="content">
+
+    <!-- DASHBOARD PAGE -->
+    <div class="page active" id="page-dashboard">
+      <div class="dashboard-grid">
+        <div class="stat-card">
+          <div class="stat-icon">📝</div>
+          <div class="stat-info">
+            <div class="stat-value" id="stat-total-q">0</div>
+            <div class="stat-label">Total Questions</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">✅</div>
+          <div class="stat-info">
+            <div class="stat-value" id="stat-reviewed">0</div>
+            <div class="stat-label">Questions Reviewed</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">📚</div>
+          <div class="stat-info">
+            <div class="stat-value" id="stat-subjects">0</div>
+            <div class="stat-label">Subjects Covered</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🔥</div>
+          <div class="stat-info">
+            <div class="stat-value" id="stat-streak">0</div>
+            <div class="stat-label">Day Streak</div>
+          </div>
+        </div>
+      </div>
+      <div class="section-title">📖 Subject Areas</div>
+      <div class="subject-cards" id="dashboard-subjects"></div>
+    </div>
+
+    <!-- Q&A PAGE -->
+    <div class="page" id="page-questions">
+      <div class="filters" id="question-filters"></div>
+      <div id="questions-content">
+        <div class="empty-state">
+          <div class="empty-state-icon">👈</div>
+          <div class="empty-state-title">Select a topic from the sidebar</div>
+          <p>Browse subjects and topics to view interview questions and detailed answers</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRACTICE PAGE -->
+    <div class="page" id="page-practice">
+      <div class="practice-container">
+        <div class="practice-header">
+          <h1 style="font-size:24px;font-weight:700;margin-bottom:8px;">🎯 Practice Mode</h1>
+          <p style="color:var(--text-secondary)">Test yourself – try to answer before revealing</p>
+        </div>
+        <div style="display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap;">
+          <select id="practice-subject-select" onchange="setupPractice()" style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text);font-size:14px;">
+            <option value="all">All Subjects</option>
+          </select>
+          <select id="practice-difficulty-select" onchange="setupPractice()" style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text);font-size:14px;">
+            <option value="all">All Difficulties</option>
+            <option value="Beginner">Beginner</option>
+            <option value="Intermediate">Intermediate</option>
+            <option value="Advanced">Advanced</option>
+          </select>
+          <button class="btn btn-primary" onclick="setupPractice()">🔀 Shuffle</button>
+        </div>
+        <div class="practice-card" id="practice-card">
+          <div id="practice-q" class="practice-q">Loading...</div>
+          <button class="reveal-btn" onclick="revealAnswer()">👁️ Reveal Answer</button>
+          <div class="practice-answer" id="practice-answer">
+            <div class="practice-answer-box" id="practice-a"></div>
+            <div class="rating-buttons">
+              <button class="rate-btn rate-easy" onclick="rateAndNext('easy')">😊 Easy</button>
+              <button class="rate-btn rate-medium" onclick="rateAndNext('medium')">🤔 Medium</button>
+              <button class="rate-btn rate-hard" onclick="rateAndNext('hard')">💪 Hard</button>
+            </div>
+          </div>
+        </div>
+        <div class="practice-controls">
+          <span class="practice-progress" id="practice-progress">Question 1 of 0</span>
+          <div style="display:flex;gap:8px;">
+            <button class="btn btn-secondary" onclick="prevQuestion()">← Prev</button>
+            <button class="btn btn-primary" onclick="nextQuestion()">Next →</button>
+          </div>
+        </div>
+        <div style="margin-top:24px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;">
+          <div style="font-size:14px;font-weight:600;margin-bottom:12px;">📊 Session Stats</div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;text-align:center;">
+            <div><div style="font-size:22px;font-weight:700;color:#10b981;" id="sess-easy">0</div><div style="font-size:11px;color:var(--text-secondary);">Easy</div></div>
+            <div><div style="font-size:22px;font-weight:700;color:#f59e0b;" id="sess-medium">0</div><div style="font-size:11px;color:var(--text-secondary);">Medium</div></div>
+            <div><div style="font-size:22px;font-weight:700;color:#ef4444;" id="sess-hard">0</div><div style="font-size:11px;color:var(--text-secondary);">Hard</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- JD MATCHER PAGE -->
+    <div class="page" id="page-jdmatch">
+      <div class="jd-container">
+        <h1 class="jd-title">🔍 JD Role Matcher</h1>
+        <p class="jd-subtitle">Paste a job description and discover which sections to focus on, with question probability estimates for your interview.</p>
+        <div class="jd-input-area">
+          <textarea class="jd-textarea" id="jd-text" placeholder="Paste your job description here...
+
+Example: 'We are looking for an Investment Banking Analyst with 2+ years of experience in M&A, financial modeling, DCF, comparable company analysis, and leveraged buyout (LBO) modeling. The ideal candidate will have experience in the Technology sector and strong accounting knowledge...'"
+          ></textarea>
+        </div>
+        <div class="jd-actions">
+          <button class="btn btn-primary" onclick="analyzeJD()">🔍 Analyze JD</button>
+          <button class="btn btn-secondary" onclick="clearJD()">Clear</button>
+        </div>
+        <div id="jd-results"></div>
+      </div>
+    </div>
+
+    <!-- DAILY PAGE -->
+    <div class="page" id="page-daily">
+      <h1 style="font-size:24px;font-weight:700;margin-bottom:8px;">📰 Daily Finance Hub</h1>
+      <p style="color:var(--text-secondary);margin-bottom:24px;">Daily trivia, market knowledge, and quick knowledge checks</p>
+      <div class="daily-grid">
+        <!-- Trivia -->
+        <div class="trivia-card">
+          <div class="trivia-title">🧠 Daily Trivia</div>
+          <div class="trivia-category" id="trivia-cat">Finance Basics</div>
+          <div class="trivia-q" id="trivia-q">Loading...</div>
+          <div class="trivia-options" id="trivia-options"></div>
+          <div class="trivia-explanation" id="trivia-explanation"></div>
+          <div class="trivia-nav">
+            <span class="trivia-counter" id="trivia-counter">1 / 12</span>
+            <div style="display:flex;gap:8px;">
+              <button class="btn btn-secondary" onclick="prevTrivia()" style="padding:6px 14px;font-size:12px;">← Prev</button>
+              <button class="btn btn-primary" onclick="nextTrivia()" style="padding:6px 14px;font-size:12px;">Next →</button>
+            </div>
+          </div>
+        </div>
+        <!-- Market Knowledge -->
+        <div class="news-card">
+          <div class="news-title">📈 Market Knowledge Topics</div>
+          <div id="knowledge-items"></div>
+        </div>
+      </div>
+      <!-- Knowledge Checks -->
+      <div class="knowledge-checks">
+        <div class="kc-title">⚡ Quick Knowledge Checks</div>
+        <div class="kc-cards" id="kc-cards"></div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// Interview Prep Master - Data extracted from Wall Street Prep Red Book
+const INTERVIEW_DATA = {
+  subjects: [
+    {
+      id: "accounting",
+      name: "Accounting",
+      icon: "📊",
+      color: "#3B82F6",
+      description: "Financial statements, accrual concepts, and advanced accounting topics",
+      topics: [
+        {
+          id: "financial-statements",
+          name: "Financial Statements & Accrual Concepts",
+          difficulty: "Beginner",
+          frequency: "Very High",
+          relevantRoles: ["investment-banking", "equity-research", "private-equity", "accounting", "corporate-finance"],
+          questions: [
+            {
+              q: "What is the primary purpose of US GAAP?",
+              a: "In the US, the SEC authorizes FASB to determine accounting rules for publicly traded companies. Financial statements must follow US Generally Accepted Accounting Principles (US GAAP). Through standardization of financial reporting and ensuring all financials are presented on a fair, consistent basis – the interests of investors and lenders are protected."
+            },
+            {
+              q: "What are the main sections of a 10-K?",
+              a: "In a 10-K, you'll find the three core financial statements (income statement, cash flow statement, balance sheet), plus statement of shareholders' equity, statement of comprehensive income, and supplementary data. Main sections include: (1) Business Overview – company divisions, strategy, products, risks; (2) MD&A – management commentary on fiscal year results; (3) Financial Statements – the Core 3 plus Other 2; (4) Notes – supplementary disclosures."
+            },
+            {
+              q: "What is the difference between the 10-K and 10-Q?",
+              a: "10-K: Annual report filed with the SEC. Comprehensive, covering full business overview, management commentary, risk factors, and all three financial statements with supplementary data. Must be audited. Filed ~60-90 days after fiscal year end. 10-Q: Quarterly report filed with the SEC. Far more condensed, focused on quarterly financials with brief MD&A. Only reviewed by CPAs (not audited). Filed ~40-45 days after quarter end."
+            },
+            {
+              q: "Walk me through the three financial statements.",
+              a: "1. Income Statement: Shows a company's profitability over a specified period. Starts with revenue at the top and ends with net income at the bottom after deducting costs and expenses. 2. Balance Sheet: A snapshot of a company's assets (resources) and sources of funding (liabilities + equity) at a specific point in time. Equation: Assets = Liabilities + Shareholders' Equity. 3. Cash Flow Statement: Under the indirect method, starts with net income and adjusts for non-cash items (D&A) and changes in working capital to arrive at cash from operations. Then adds cash from investing and financing to get net change in cash."
+            },
+            {
+              q: "Walk me through the income statement.",
+              a: "The income statement shows accrual-based profitability over a specified time period. Key items: Net Revenue → minus COGS = Gross Profit → minus SG&A and R&D = EBITDA → minus D&A = Operating Income (EBIT) → minus Interest Expense (net) = Pre-Tax Income (EBT) → minus Tax Expense = Net Income ('bottom line')."
+            },
+            {
+              q: "Walk me through the balance sheet.",
+              a: "The balance sheet shows assets, liabilities, and equity at a specific point in time. Fundamental equation: Assets = Liabilities + Shareholders' Equity. Assets: Organized by liquidity – Current Assets (cash, A/R, inventory, prepaid expenses) and Long-Term Assets (PP&E, intangibles, goodwill). Liabilities: Listed by proximity to due date – Current Liabilities (A/P, accrued expenses, short-term debt) and Long-Term Liabilities (long-term debt, deferred revenue, deferred taxes). Shareholders' Equity: Common stock, APIC, preferred stock, treasury stock, retained earnings, OCI."
+            },
+            {
+              q: "Walk me through the cash flow statement.",
+              a: "The cash flow statement uses the indirect method and has three sections: 1. Cash from Operations: Starts with net income, adds back non-cash expenses (D&A, SBC), adjusts for changes in working capital. 2. Cash from Investing: Capital expenditures (typically the largest outflow), plus business acquisitions or divestitures. 3. Cash from Financing: Net cash from equity/debt issuances minus share repurchases and debt repayments, including dividend payouts. Sum of all three = net change in cash. Add beginning cash balance = ending cash balance."
+            },
+            {
+              q: "How are the three financial statements connected?",
+              a: "IS ↔ CFS: Net income is the starting line on the cash flow statement. CFS ↔ BS: The CFS tracks changes in balance sheet working capital items, the impact from capex (PP&E), debt/equity issuances, and share buybacks (treasury stock). The ending cash balance from CFS flows to BS as the current period's cash balance. IS ↔ BS: Net income minus dividends adds to prior retained earnings. Interest expense is calculated off debt balances on BS. PP&E on BS is reduced by depreciation on IS."
+            },
+            {
+              q: "Which is more important, the income statement or the cash flow statement?",
+              a: "Both are necessary, but the cash flow statement is arguably more important because it reconciles accrual-based net income to actual cash movements. This reveals liquidity-related issues and investment/financing activities not visible on the accrual-based income statement. 'Cash is king.' Exception: for unprofitable companies, the income statement may be needed for revenue-based valuation."
+            },
+            {
+              q: "Tell me about the revenue recognition and matching principle.",
+              a: "Revenue Recognition Principle: Revenue is recorded in the same period the good or service was delivered (earned), whether or not cash was collected. Matching Principle: Expenses associated with generating revenue must be recorded in the same period as that revenue."
+            },
+            {
+              q: "What is deferred revenue?",
+              a: "Deferred revenue (or 'unearned' revenue) is a liability representing cash payments collected from customers for products/services not yet provided. Examples: gift cards, service agreements, implied rights to future software upgrades. Cash is received upfront but revenue is recognized only when the product/service is delivered. It's a liability because the company has an unfulfilled obligation to customers."
+            },
+            {
+              q: "What is the difference between LIFO and FIFO?",
+              a: "FIFO (First In, First Out): Goods purchased earlier are expensed first. LIFO (Last In, First Out): Most recently purchased inventory is expensed first. Impact with rising costs: FIFO → lower COGS, higher net income. LIFO → higher COGS, lower net income. Impact with falling costs: FIFO → higher COGS, lower net income. LIFO → lower COGS, higher net income. LIFO is not permitted under IFRS."
+            },
+            {
+              q: "How would a $10 increase in depreciation flow through the financial statements?",
+              a: "IS: EBIT decreases by $10. Assuming 30% tax rate, net income declines by $7. CFS: Net income is down $7, but $10 depreciation is added back (non-cash). Net impact is +$3 to ending cash. BS: PP&E decreases by $10, cash increases by $3. On L&E side, retained earnings decrease by $7. Balance sheet remains balanced (both sides changed by -$7)."
+            },
+            {
+              q: "What is goodwill and how is it created?",
+              a: "Goodwill represents an intangible asset capturing the excess of the purchase price over the fair market value of an acquired business's net assets. Example: If an acquirer pays $500M for a company with FMV of $450M, goodwill of $50M is recognized on the acquirer's balance sheet. Under GAAP, goodwill is not amortized but tested annually for impairment."
+            },
+            {
+              q: "What is working capital?",
+              a: "Working capital measures a company's liquidity and ability to pay off current obligations. Formula: Working Capital = Current Assets − Current Liabilities. Net Working Capital (NWC) excludes cash and debt since they're non-operational: NWC = Operating Current Assets − Operating Current Liabilities. An increase in NWC means less cash flow (cash tied up in operations)."
+            }
+          ]
+        },
+        {
+          id: "financial-analysis",
+          name: "Financial Statement Analysis",
+          difficulty: "Intermediate",
+          frequency: "High",
+          relevantRoles: ["investment-banking", "equity-research", "private-equity", "corporate-finance", "credit-analysis"],
+          questions: [
+            {
+              q: "What are the most common profitability margins?",
+              a: "1. Gross Margin = Gross Profit / Revenue – measures profitability after direct costs. 2. Operating Margin = EBIT / Revenue – measures operational profitability, independent of capital structure and taxes. 3. Net Profit Margin = Net Income / Revenue – measures total profitability after all expenses. 4. EBITDA Margin = EBITDA / Revenue – most widely used for benchmarking; independent of capital structure, taxes, and non-cash expenses."
+            },
+            {
+              q: "What does 'above the line' and 'below the line' mean?",
+              a: "'The line' refers to operating income. Above the line: metrics reflecting operational performance before non-operational items (interest, taxes). EBITDA is above the line. Below the line: metrics that have adjusted for non-operating income/expenses (interest, taxes). Net income is below the line."
+            },
+            {
+              q: "What are the efficiency ratios for working capital?",
+              a: "Days Inventory Held (DIH) = (Inventory / COGS) × 365 – average days to sell inventory. Days Sales Outstanding (DSO) = (AR / Revenue) × 365 – average days to collect payments. Days Payable Outstanding (DPO) = (AP / COGS) × 365 – average days to pay suppliers. Cash Conversion Cycle (CCC) = DIH + DSO − DPO – measures days to convert inventory to cash."
+            },
+            {
+              q: "What are non-recurring items and why do we adjust for them?",
+              a: "Non-recurring items are one-time charges or gains not expected to repeat: legal settlements, restructuring expenses, inventory write-downs, asset impairments. We adjust ('scrub') for them to normalize cash flows and show a company's true operational performance. Whether an expense is non-recurring can be industry-specific – e.g., litigation expenses may be recurring for pharmaceutical companies."
+            },
+            {
+              q: "What is the difference between organic and inorganic revenue growth?",
+              a: "Organic Growth: Expansion driven by internal efforts – entering new markets, improving sales/marketing, launching new products. Inorganic Growth: Growth driven by M&A. Often faster and more convenient. Post-acquisition benefits include synergies, new customers, bundled products, and revenue diversification."
+            }
+          ]
+        },
+        {
+          id: "advanced-accounting",
+          name: "Advanced Accounting",
+          difficulty: "Advanced",
+          frequency: "Medium",
+          relevantRoles: ["investment-banking", "private-equity", "accounting"],
+          questions: [
+            {
+              q: "What are some discretionary management decisions that could inflate earnings?",
+              a: "1. Excess useful life assumptions for capex to reduce annual depreciation. 2. Switching LIFO to FIFO if inventory costs are rising (higher net income). 3. Refusing to write down impaired assets. 4. Capitalizing costs rather than expensing them. 5. Repurchasing shares to reduce share count and inflate EPS. 6. Deferring capex or R&D to next period. 7. More aggressive revenue recognition policies."
+            },
+            {
+              q: "What is the difference between US GAAP and IFRS?",
+              a: "US GAAP: Set by FASB, used by US public companies. Rules-based approach. IFRS: Set by IASB, used in 144+ countries. Principles-based approach. Key differences: LIFO is allowed under GAAP but prohibited under IFRS; IFRS allows PP&E revaluation to fair value; goodwill amortization: prohibited under GAAP for public companies, allowed under IFRS; R&D: all expensed under GAAP, development costs can be capitalized under IFRS."
+            },
+            {
+              q: "What is the conservatism principle in accounting?",
+              a: "The conservatism principle requires caution when preparing financial statements, leading to a downward bias in estimates. It's better to understate revenue/assets than overstate them, and better to overstate expenses/liabilities than understate them. This minimizes the risk of overstated revenues or understated liabilities, protecting investors."
+            },
+            {
+              q: "What is a deferred tax asset vs. deferred tax liability?",
+              a: "Deferred Tax Liability (DTL): Occurs when taxable income is less than book income in the current period. Taxes will be higher in the future (e.g., accelerated depreciation for tax purposes). Deferred Tax Asset (DTA): Occurs when taxable income exceeds book income. Taxes will be lower in the future (e.g., revenue recognized for tax before book, net operating loss carryforwards)."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      id: "valuation",
+      name: "Valuation",
+      icon: "💰",
+      color: "#10B981",
+      description: "DCF, comparable companies, precedent transactions, and corporate finance theory",
+      topics: [
+        {
+          id: "corporate-finance-theory",
+          name: "Corporate Finance Theory",
+          difficulty: "Intermediate",
+          frequency: "Very High",
+          relevantRoles: ["investment-banking", "equity-research", "private-equity", "corporate-finance"],
+          questions: [
+            {
+              q: "What is WACC and how do you calculate it?",
+              a: "WACC (Weighted Average Cost of Capital) is the blended rate of return required by all capital providers (debt and equity). Formula: WACC = [Ke × (E/V)] + [Kd × (1-t) × (D/V)] where: Ke = cost of equity, E = equity market value, V = total capital (D+E), Kd = pre-tax cost of debt, t = tax rate, D = debt market value. WACC represents the minimum required return a company must generate to satisfy all investors."
+            },
+            {
+              q: "How do you calculate the cost of equity?",
+              a: "Using CAPM (Capital Asset Pricing Model): Cost of Equity = Risk-Free Rate + (Beta × Equity Risk Premium). Risk-Free Rate: Typically the 10-year US Treasury yield. Beta: Measures a stock's volatility relative to the market. Equity Risk Premium (ERP): The excess return investors expect over the risk-free rate for investing in equities (typically 5-7%)."
+            },
+            {
+              q: "What is beta and how is it used?",
+              a: "Beta measures a stock's sensitivity to market movements. Beta > 1: More volatile than the market. Beta < 1: Less volatile. Beta = 1: Moves in line with the market. Beta = 0: No correlation with market. For private companies or unlevered companies, we 'unlever' public company betas to remove financial risk, then 'relever' using the target's capital structure. Unlevered Beta = Levered Beta / [1 + (1-t) × D/E]"
+            },
+            {
+              q: "What is enterprise value vs. equity value?",
+              a: "Enterprise Value (EV): Total value of a business, regardless of capital structure. EV = Equity Value + Debt + Preferred Stock + Minority Interest − Cash. Represents what it would cost to acquire the entire business (take it private). Equity Value (Market Cap): Value attributable only to equity shareholders. Equity Value = Share Price × Diluted Shares Outstanding. Key: EV is capital structure neutral; equity value is after the effect of debt and cash."
+            },
+            {
+              q: "What is the bridge from enterprise value to equity value?",
+              a: "Starting from Enterprise Value: − Net Debt (Debt + Preferred + Minority Interest − Cash) = Equity Value. Or: Equity Value + Net Debt = Enterprise Value. Important: Cash is subtracted (buyer gets it), Debt is added (buyer assumes it). The bridge helps move between valuation methodologies and per-share values."
+            },
+            {
+              q: "Why do we use EBITDA multiples rather than net income multiples?",
+              a: "EBITDA is capital structure neutral (excludes interest expense) and excludes non-cash charges (D&A), making it a better measure for cross-company comparison. Net income is affected by financing decisions (debt levels, interest expense) and non-cash items like depreciation, which vary significantly between companies. EBITDA multiples allow fair comparison regardless of capital structure or asset-intensity differences."
+            }
+          ]
+        },
+        {
+          id: "dcf-valuation",
+          name: "Intrinsic Valuation (DCF)",
+          difficulty: "Advanced",
+          frequency: "Very High",
+          relevantRoles: ["investment-banking", "equity-research", "private-equity", "corporate-finance"],
+          questions: [
+            {
+              q: "Walk me through a DCF analysis.",
+              a: "1. Project Unlevered Free Cash Flows (UFCF) for 5-10 years: UFCF = EBIT × (1-t) + D&A − Capex − Change in NWC. 2. Calculate Terminal Value: Either Gordon Growth Model [TV = FCF × (1+g) / (WACC-g)] or Exit Multiple Method [TV = EBITDA × Exit Multiple]. 3. Discount all FCFs and Terminal Value to present using WACC. 4. Sum PV of FCFs + PV of TV = Enterprise Value. 5. Add cash, subtract debt to get Equity Value. 6. Divide by diluted shares = intrinsic value per share."
+            },
+            {
+              q: "What is unlevered free cash flow?",
+              a: "Unlevered FCF (also called FCFF – Free Cash Flow to Firm) represents cash flows available to ALL capital providers (debt and equity holders) before any financing-related payments. Formula: UFCF = EBIT × (1-t) + D&A − Capex − Increase in NWC. It's 'unlevered' because it excludes interest payments, making it capital structure neutral."
+            },
+            {
+              q: "What are the two methods for calculating terminal value?",
+              a: "1. Gordon Growth Model (Perpetuity Growth): TV = FCF_last × (1+g) / (WACC − g). Assumes the business grows at a constant rate forever. Growth rate should be close to long-term GDP growth (1-3%). 2. Exit Multiple Method: TV = EBITDA_last × Exit Multiple. The exit multiple is selected based on comparable companies' current trading multiples. The two methods should be cross-checked for reasonableness."
+            },
+            {
+              q: "What are the limitations of a DCF?",
+              a: "1. Garbage in, garbage out – highly sensitive to assumptions. 2. Terminal value often represents 70-80%+ of total value. 3. WACC and growth rate assumptions are subjective. 4. Difficult for companies with negative FCF. 5. Doesn't capture strategic value or synergies in M&A context. 6. Sensitive to discount rate – small changes have large value impact. Despite limitations, DCF is still the most rigorous valuation method."
+            },
+            {
+              q: "How do you pick the discount rate for a DCF?",
+              a: "For unlevered FCF, use WACC (cost of all capital). For levered FCF (FCFE), use cost of equity (Ke). The discount rate should reflect the riskiness of the cash flows being discounted. For riskier companies or industries, a higher discount rate is appropriate. WACC should be based on target/industry-average capital structure, not necessarily current structure."
+            }
+          ]
+        },
+        {
+          id: "relative-valuation",
+          name: "Relative Valuation (Comps)",
+          difficulty: "Intermediate",
+          frequency: "Very High",
+          relevantRoles: ["investment-banking", "equity-research", "private-equity"],
+          questions: [
+            {
+              q: "Walk me through a comparable company analysis.",
+              a: "1. Select comparable companies based on industry, business model, size, and geography. 2. Collect financial data: revenue, EBITDA, net income, shares outstanding, debt, cash. 3. Calculate enterprise value and equity value for each comp. 4. Calculate trading multiples: EV/Revenue, EV/EBITDA, P/E. 5. Apply median/mean multiples to subject company's metrics. 6. Calculate implied enterprise value → bridge to equity value → implied share price."
+            },
+            {
+              q: "What are the most commonly used trading multiples?",
+              a: "Enterprise Value Multiples: EV/EBITDA (most common), EV/EBIT, EV/Revenue (for high-growth or unprofitable companies), EV/EBITDA-Capex (for capex-heavy industries). Equity Multiples: Price/Earnings (P/E), Price/Book (P/B, for banks/financials), Price/FCF. Industry-specific multiples: EV/Subscribers (telecoms), EV/Beds (healthcare), EV/Proved Reserves (O&G)."
+            },
+            {
+              q: "Walk me through a precedent transactions analysis.",
+              a: "Similar to comps but uses M&A transactions instead of public market valuations. 1. Select relevant precedent transactions (same industry, similar size). 2. Calculate transaction multiples based on announced deal values. 3. Transaction multiples typically include a 'control premium' (20-30%) over public market prices. 4. Apply to subject company metrics. Precedent transactions tend to result in higher valuations than trading comps."
+            },
+            {
+              q: "Why is there typically a premium in precedent transactions vs. trading comps?",
+              a: "Precedent transactions include a 'control premium' – the premium buyers pay to gain full control of a company. This includes expected synergies, strategic value, and competitive bidding dynamics. The premium averages 20-30% over the public market price. Trading comps reflect minority, liquid market prices (no control premium included)."
+            },
+            {
+              q: "What is the order of valuations from lowest to highest?",
+              a: "Typically: DCF (can vary widely) < 52-Week Low < Trading Comps < Precedent Transactions < LBO Analysis < 52-Week High. However, the actual ordering can vary based on market conditions and assumptions. Precedent transactions are usually highest due to control premiums. LBO sets a 'floor' price (minimum PE firms would pay)."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      id: "ma",
+      name: "Mergers & Acquisitions",
+      icon: "🤝",
+      color: "#8B5CF6",
+      description: "M&A concepts, deal structures, accretion/dilution analysis",
+      topics: [
+        {
+          id: "ma-concepts",
+          name: "M&A Concepts",
+          difficulty: "Intermediate",
+          frequency: "Very High",
+          relevantRoles: ["investment-banking", "private-equity", "corporate-finance"],
+          questions: [
+            {
+              q: "Why do companies pursue M&A?",
+              a: "1. Synergies: Revenue synergies (cross-selling, new markets) and cost synergies (eliminating duplicated functions, economies of scale). 2. Geographic/Product Diversification: Enter new markets or add new products. 3. Accelerated Growth: Faster than organic growth. 4. Talent Acquisition: Acquire key employees or IP. 5. Eliminate Competition: Buy out competitors. 6. Financial Motives: Tax benefits (NOL carryforwards), accretion to EPS. 7. Undervalued Target: Acquire at a discount to intrinsic value."
+            },
+            {
+              q: "What are the types of mergers?",
+              a: "1. Horizontal: Same industry/competitors (e.g., two banks merging). Creates cost synergies by eliminating duplication. 2. Vertical: Buyer and seller in the same supply chain (e.g., manufacturer acquires supplier). Improves supply chain control and margins. 3. Conglomerate: Companies in unrelated businesses. Provides diversification. 4. Merger of Equals (MOE): Similar-sized companies combining. Usually stock-for-stock deals."
+            },
+            {
+              q: "What is a leveraged buyout (LBO)?",
+              a: "An LBO is an acquisition financed primarily with debt (60-70%+ of total capital), with the target company's assets serving as collateral. The PE sponsor provides a small equity portion (30-40%). Returns are generated through: (1) Debt paydown using the company's FCF, (2) EBITDA multiple expansion at exit, (3) Operational improvements increasing EBITDA. LBOs require stable, predictable FCF to service debt."
+            },
+            {
+              q: "What is the difference between a stock purchase and an asset purchase?",
+              a: "Stock Purchase: Buyer acquires the company's shares directly. Assumes ALL liabilities (disclosed and undisclosed). Simpler administratively. Preferred by sellers (capital gains tax treatment). Asset Purchase: Buyer acquires specific assets and liabilities. Can cherry-pick assets; avoids unwanted liabilities. Tax benefits through stepped-up asset basis (more depreciation/amortization). Preferred by buyers. More complex (may need to renegotiate contracts)."
+            },
+            {
+              q: "What are synergies and how do you calculate them?",
+              a: "Synergies represent incremental value created from combining two businesses. Revenue Synergies: Cross-selling, new customers, pricing power, expanded geographic reach (harder to quantify, more uncertain). Cost Synergies: Eliminate redundant functions, consolidate facilities, procurement savings, eliminate overlapping headcount (easier to quantify, more reliable). Value of Synergies = PV of annual synergies / (WACC - growth rate) or more simply = Annual Synergies × Synergy Multiple."
+            }
+          ]
+        },
+        {
+          id: "accretion-dilution",
+          name: "Accretion/Dilution Modeling",
+          difficulty: "Advanced",
+          frequency: "High",
+          relevantRoles: ["investment-banking", "equity-research", "corporate-finance"],
+          questions: [
+            {
+              q: "What is accretion/dilution analysis?",
+              a: "Accretion/dilution analysis assesses the impact of an acquisition on the acquirer's EPS. Accretive: If pro-forma combined EPS > standalone acquirer EPS (the deal increases EPS). Dilutive: If pro-forma combined EPS < standalone acquirer EPS (the deal decreases EPS). This is relevant for public company acquirers because stock-based deals issue new shares."
+            },
+            {
+              q: "Walk me through how you determine if a deal is accretive or dilutive.",
+              a: "1. Calculate the acquirer's standalone EPS. 2. Add the target's net income to arrive at combined net income. 3. Adjust for synergies (after-tax), transaction costs, and additional interest expense (from new debt) or interest income lost (from cash used). 4. Add any new shares issued (stock deals). 5. Pro-forma EPS = Adjusted Combined Net Income / New Diluted Share Count. 6. Compare Pro-forma EPS to Acquirer Standalone EPS. If higher → accretive; if lower → dilutive."
+            },
+            {
+              q: "In a stock deal, what determines if it's accretive or dilutive?",
+              a: "The key driver is the relative P/E ratios of acquirer and target. If the acquirer's P/E > target's P/E: Accretive (before synergies). The acquirer is 'using' high P/E shares to buy lower P/E earnings, adding more EPS than it costs in shares. If the acquirer's P/E < target's P/E: Dilutive. The acquirer is paying more (in P/E terms) than what it's buying."
+            },
+            {
+              q: "What are some factors that can affect accretion/dilution?",
+              a: "1. Deal Consideration Mix: More cash/debt → fewer dilutive shares. More stock → more dilutive shares. 2. Transaction Price / Premium Paid: Higher premium → less accretive. 3. Synergies: Post-tax synergies can turn a dilutive deal accretive. 4. Relative P/E Ratios: Higher acquirer P/E is favorable. 5. Interest Rate on New Debt: Higher rates increase interest expense, reducing accretion. 6. Goodwill Amortization: Under IFRS, goodwill amortization reduces net income."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      id: "lbo",
+      name: "Leveraged Buyouts",
+      icon: "🏦",
+      color: "#F59E0B",
+      description: "LBO fundamentals, private equity investing, and LBO modeling",
+      topics: [
+        {
+          id: "pe-investing",
+          name: "Private Equity Investing",
+          difficulty: "Advanced",
+          frequency: "High",
+          relevantRoles: ["private-equity", "investment-banking"],
+          questions: [
+            {
+              q: "What makes an ideal LBO candidate?",
+              a: "1. Strong, Stable FCF: Needed to service heavy debt load. 2. Predictable Revenue: Recurring contracts, subscription models, low cyclicality. 3. Low Existing Debt: Company should have capacity to take on new debt. 4. Hard Assets for Collateral: PP&E, real estate to secure loans. 5. Market Leadership: Pricing power and competitive moat. 6. Clear Exit Strategy: Multiple potential exit paths (IPO, strategic sale, secondary). 7. Management Team: Ideally incentivized with equity. 8. Operational Improvement Opportunities: Multiple levers for EBITDA growth."
+            },
+            {
+              q: "What are the typical return metrics for a PE fund?",
+              a: "1. IRR (Internal Rate of Return): Annualized return accounting for timing of cash flows. PE funds typically target 20%+ IRR. 2. MOIC (Multiple on Invested Capital): Total value returned / initial investment. Typical target is 2.0x-3.0x. 3. Cash-on-Cash Multiple: Same as MOIC for buyout context. The holding period is typically 3-7 years. 20% IRR over 5 years ≈ 2.5x MOIC."
+            },
+            {
+              q: "What are the value creation levers in an LBO?",
+              a: "1. Debt Paydown: Using FCF to reduce debt, increasing equity ownership. 2. EBITDA Growth: Revenue growth and margin improvement → higher exit value. 3. Multiple Expansion: Buying at a lower multiple and selling at a higher multiple. 4. Operational Improvements: Cost cuts, pricing optimization, entering new markets. 5. Add-on Acquisitions: 'Roll-up' strategy to increase scale and improve multiples. The largest and most reliable source is debt paydown + EBITDA growth."
+            },
+            {
+              q: "Walk me through a simple LBO model.",
+              a: "1. Entry: Determine purchase price (EV = EBITDA × Entry Multiple), capital structure (debt/equity split). 2. Hold Period (5 years): Project revenue, EBITDA, free cash flow. Use FCF to pay down debt each year. 3. Exit: Calculate exit EV (EBITDA × Exit Multiple). 4. Equity Proceeds: Exit EV − Remaining Debt = Equity Value at Exit. 5. Returns: IRR = (Equity Value at Exit / Initial Equity) ^ (1/Years) − 1. MOIC = Equity Value at Exit / Initial Equity."
+            }
+          ]
+        },
+        {
+          id: "lbo-modeling",
+          name: "LBO Modeling",
+          difficulty: "Advanced",
+          frequency: "Medium",
+          relevantRoles: ["private-equity", "investment-banking"],
+          questions: [
+            {
+              q: "What types of debt are used in an LBO?",
+              a: "Senior Secured Debt (highest priority): Term Loans (TLA, TLB), Revolving Credit Facility. First Lien, lowest interest rate. Senior Unsecured / Junior Secured: Notes / Bonds. Higher rate. Subordinated / Mezzanine Debt: PIK notes, mezzanine loans. Highest rate. Equity: PE sponsor equity, management rollover. Last in priority; highest risk/reward. The mix is determined by the target's credit profile and market conditions."
+            },
+            {
+              q: "What is a dividend recapitalization?",
+              a: "A dividend recapitalization ('div recap') is when a PE-owned company takes on additional debt to pay a dividend to the PE sponsor and management team. This allows the PE firm to realize returns before an exit event. It increases leverage on the company, increasing financial risk. Common during favorable credit markets when debt is cheap and easily available."
+            },
+            {
+              q: "What is a PIK note?",
+              a: "PIK stands for 'Payment In Kind.' A PIK note is a form of debt where interest payments are made in additional debt (or equity) rather than cash. This preserves the company's cash for operations and debt paydown. PIK notes typically carry very high interest rates to compensate for the deferred cash payment. They are common in highly leveraged transactions where cash flow is tight."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      id: "capital-markets",
+      name: "Capital Markets",
+      icon: "📈",
+      color: "#EF4444",
+      description: "Debt, equity financing, market knowledge, and trading strategies",
+      topics: [
+        {
+          id: "debt-finance",
+          name: "Debt & Leveraged Finance",
+          difficulty: "Advanced",
+          frequency: "High",
+          relevantRoles: ["investment-banking", "credit-analysis", "sales-trading"],
+          questions: [
+            {
+              q: "What are the main types of debt instruments?",
+              a: "Secured Debt: Backed by specific collateral. First lien has priority in bankruptcy. Types: Term Loans (amortizing), Revolving Credit Facilities, Mortgage-backed. Unsecured Debt: No collateral backing. Higher risk → higher interest rates. Types: Investment Grade Bonds, High Yield ('Junk') Bonds, Subordinated Notes. Hybrid Instruments: Convertible notes (convert to equity under certain conditions), Mezzanine debt, PIK notes."
+            },
+            {
+              q: "What is the difference between investment grade and high yield bonds?",
+              a: "Investment Grade (BBB-/Baa3 or above): Lower risk of default. Lower interest rates. Issued by stable, large companies. Covenants are looser. High Yield ('Junk', BB+/Ba1 or below): Higher risk of default. Higher interest rates (spread over Treasuries). Issued by smaller, higher-leverage companies or LBO targets. Stricter covenants. The boundary is the distinction between 'investment grade' and 'speculative grade' credit."
+            },
+            {
+              q: "What is credit spread?",
+              a: "Credit spread is the yield difference between a corporate bond and a comparable maturity Treasury bond (risk-free rate). It represents the compensation investors demand for taking on credit risk. Wider spread → higher perceived risk (or risk-off environment). Narrower spread → lower perceived risk. Credit spreads are cyclical and widen significantly during recessions or credit events."
+            },
+            {
+              q: "What is a leveraged loan?",
+              a: "Leveraged loans are syndicated bank loans made to companies with sub-investment grade credit ratings or high existing debt levels. Features: Typically floating rate (SOFR + spread), secured by company assets, often used in LBO financing. Arranged by investment banks and syndicated to institutional investors (CLOs, hedge funds). The leveraged loan market is part of the broader leveraged finance ecosystem."
+            }
+          ]
+        },
+        {
+          id: "equity-finance",
+          name: "Equity Financing",
+          difficulty: "Intermediate",
+          frequency: "High",
+          relevantRoles: ["investment-banking", "equity-research", "sales-trading"],
+          questions: [
+            {
+              q: "Walk me through the IPO process.",
+              a: "1. Preparation: Company selects underwriters (investment banks), conducts due diligence, prepares S-1 registration statement for SEC. 2. SEC Review: SEC reviews and comments on the S-1. Company responds with amendments. 3. Roadshow: Management and bankers present to institutional investors for 2-3 weeks. 4. Pricing: Based on book-building demand, shares are priced. 5. Trading: Shares begin trading on exchange. Typically 180-day lockup for insiders. The lead underwriter (book-runner) coordinates the process."
+            },
+            {
+              q: "What is the difference between a primary and secondary offering?",
+              a: "Primary Offering: Company issues NEW shares. Proceeds go to the company and increase its cash/equity. Dilutive to existing shareholders. Secondary Offering: Existing shareholders (insiders, PE sponsors) sell their existing shares. Proceeds go to the sellers, NOT the company. No dilution to other shareholders, no new cash to company. Most IPOs are a mix of primary and secondary offerings."
+            },
+            {
+              q: "What is a greenshoe option?",
+              a: "Also called an 'over-allotment option,' a greenshoe allows the underwriter to sell up to 15% more shares than originally planned if demand is high. If the stock price rises after IPO, the underwriter exercises the option to buy additional shares from the issuer at the IPO price. If the stock falls, the underwriter buys shares in the open market to stabilize the price. Named after the Green Shoe Manufacturing Company, the first company to use this option."
+            },
+            {
+              q: "What are the main types of ECM transactions?",
+              a: "1. IPO (Initial Public Offering): First-ever public sale of shares. 2. Follow-On Offering (FPO): Subsequent public offering by an already-public company. 3. PIPE (Private Investment in Public Equity): Private placement of shares to select institutional investors. Faster and cheaper than a public offering. 4. Convertible Bonds: Debt that can convert into equity. 5. Rights Issue: Offering new shares to existing shareholders at a discount (common in Europe). 6. Block Trades: Large secondary transactions."
+            }
+          ]
+        },
+        {
+          id: "market-knowledge",
+          name: "General Market Knowledge",
+          difficulty: "Intermediate",
+          frequency: "High",
+          relevantRoles: ["investment-banking", "equity-research", "sales-trading", "hedge-fund"],
+          questions: [
+            {
+              q: "Walk me through a current market event and its implications.",
+              a: "Best approach: Pick a recent significant event (Fed rate decisions, geopolitical events, sector-specific news). Structure your answer: (1) What happened, (2) Why it happened, (3) Market reaction, (4) Implications for specific sectors/companies. Show you read the WSJ, FT, or Bloomberg daily. Connect macro events to investment themes. Demonstrate you can think about second-order effects."
+            },
+            {
+              q: "What is the yield curve and what does an inverted yield curve mean?",
+              a: "Yield Curve: Plots yields of government bonds across different maturities (3-month to 30-year). Normal Yield Curve: Long-term yields > short-term yields (economy growing). Inverted Yield Curve: Short-term yields > long-term yields. This is historically a recession predictor. Occurs when the Fed raises short-term rates aggressively, while long-term rates reflect slower future growth expectations. The 2-10 year spread is most commonly watched."
+            },
+            {
+              q: "How does monetary policy affect financial markets?",
+              a: "Fed Rate Cuts (Loose Policy): Lower discount rate → higher asset valuations in DCF. Cheaper debt → more borrowing/leverage. Positive for equities and bonds. Weakens USD. Fed Rate Hikes (Tight Policy): Higher discount rate → lower asset valuations. More expensive debt → less M&A, LBO activity. Negative for growth stocks (long duration assets). Dollar strengthens. Bond prices fall when rates rise (inverse relationship)."
+            }
+          ]
+        },
+        {
+          id: "hedge-fund",
+          name: "Hedge Fund Investing Strategies",
+          difficulty: "Advanced",
+          frequency: "Medium",
+          relevantRoles: ["hedge-fund", "equity-research"],
+          questions: [
+            {
+              q: "What are the main hedge fund strategies?",
+              a: "1. Long/Short Equity: Long undervalued stocks, short overvalued stocks. 2. Global Macro: Trade based on macroeconomic themes (currencies, rates, commodities). 3. Event-Driven: Merger arbitrage, activism, special situations. 4. Relative Value / Arbitrage: Exploit pricing inefficiencies between related securities. 5. Distressed: Invest in financially troubled companies' debt or equity. 6. Quantitative: Algorithm-driven, factor-based strategies. 7. Multi-Strategy: Combine multiple strategies."
+            },
+            {
+              q: "What is merger arbitrage?",
+              a: "Merger arbitrage (or risk arbitrage) involves buying the target company's stock after a deal announcement and shorting the acquirer's stock (in stock deals). The spread between current price and deal price represents potential profit. Risk: If the deal breaks, the spread widens (target stock falls). Key considerations: Deal certainty, regulatory risk, timeline, financing risk. The strategy is relatively market-neutral but subject to deal failure risk."
+            },
+            {
+              q: "What is short selling and how does it work?",
+              a: "Short selling involves borrowing shares, selling them in the open market, and hoping to buy them back at a lower price to return to the lender. Steps: (1) Borrow shares from a broker, (2) Sell borrowed shares at current price, (3) If price falls, buy shares at lower price, (4) Return borrowed shares, pocket the difference. Risks: Unlimited downside (stock can rise infinitely), borrow costs, short squeezes."
+            }
+          ]
+        },
+        {
+          id: "sales-trading",
+          name: "Sales & Trading",
+          difficulty: "Intermediate",
+          frequency: "Medium",
+          relevantRoles: ["sales-trading"],
+          questions: [
+            {
+              q: "What is the difference between sales and trading?",
+              a: "Sales: Client-facing role. Responsible for communicating trading ideas, market color, and research to institutional clients. Build relationships and understand client needs. Trading: Execute trades on behalf of clients (flow trading) or for the firm's own account (proprietary trading, now limited post-Volcker). Traders manage risk and make markets. Market Making: Provide liquidity by quoting bid/ask prices for securities."
+            },
+            {
+              q: "Pitch me a stock right now.",
+              a: "Structure: (1) Company overview and what it does, (2) Investment thesis (2-3 key reasons to buy), (3) Valuation – trading at X multiple vs. peers, (4) Catalysts – near-term events that will drive the stock, (5) Risks – what could make you wrong, (6) Price target. Best approach: Choose a company you know well. Have a differentiated view. Know the numbers cold. Be prepared to defend your thesis."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      id: "industry-specific",
+      name: "Industry Specific",
+      icon: "🏭",
+      color: "#06B6D4",
+      description: "TMT, SaaS, FIG, Healthcare, Consumer, Real Estate, Industrials, O&G",
+      topics: [
+        {
+          id: "tmt",
+          name: "Technology, Media & Telecom (TMT)",
+          difficulty: "Intermediate",
+          frequency: "High",
+          relevantRoles: ["investment-banking", "equity-research", "private-equity"],
+          questions: [
+            {
+              q: "What are the key metrics for technology/software companies?",
+              a: "1. ARR (Annual Recurring Revenue): Total annual subscription revenue. 2. MRR (Monthly Recurring Revenue): Monthly equivalent. 3. Churn Rate: % of customers who cancel subscriptions per period. 4. Net Revenue Retention (NRR): Revenue from existing customers including upsells/cross-sells. >100% = expanding. 5. Customer Acquisition Cost (CAC): Total sales/marketing spend / new customers. 6. LTV (Lifetime Value): Average revenue per customer × gross margin / churn rate. 7. LTV/CAC Ratio: >3x is generally healthy."
+            },
+            {
+              q: "How do you value a SaaS company?",
+              a: "SaaS companies are typically valued on EV/ARR or EV/NTM Revenue multiples due to high growth and reinvestment that suppresses EBITDA. High-growth SaaS (40%+ growth) might trade at 10-20x ARR. Rule of 40: Growth Rate % + FCF Margin % > 40 is a healthy SaaS metric. As SaaS companies mature and growth slows, valuation shifts to EV/EBITDA multiples. Magic Number and Payback Period are key efficiency metrics."
+            },
+            {
+              q: "What are the key telecom metrics?",
+              a: "ARPU (Average Revenue Per User), Churn Rate, Subscriber Count, EBITDA Margin, Capex/Revenue ratio (telecom is very capex-intensive). Key telecom metrics: Net Subscriber Additions, EBITDA-Capex ('unlevered free cash flow' for telcos), EV/EBITDA is the primary multiple. Spectrum licenses are key assets; network infrastructure (5G) requires massive capex."
+            }
+          ]
+        },
+        {
+          id: "saas",
+          name: "Software as a Service (SaaS)",
+          difficulty: "Advanced",
+          frequency: "High",
+          relevantRoles: ["investment-banking", "equity-research", "private-equity"],
+          questions: [
+            {
+              q: "What is ARR, MRR and how are they calculated?",
+              a: "ARR (Annual Recurring Revenue): The annualized value of all active subscription contracts. ARR = Number of Customers × Average Contract Value (annually). MRR (Monthly Recurring Revenue): Monthly equivalent. MRR = ARR / 12. ARR excludes one-time fees, professional services, and non-recurring revenue. It's the most important SaaS metric as it shows predictable, recurring revenue."
+            },
+            {
+              q: "What is the Rule of 40 for SaaS companies?",
+              a: "Rule of 40: Revenue Growth Rate + Profit Margin (FCF or EBITDA margin) > 40%. If a company grows 30%, it should have at least 10% FCF margin. If growing 50%, it can burn 10% and still pass. The rule balances growth and profitability. High Rule of 40 scores correlate with higher valuation multiples. Companies scoring above 40% are considered healthy SaaS businesses."
+            },
+            {
+              q: "What is Net Revenue Retention (NRR)?",
+              a: "NRR (Net Revenue Retention or Net Dollar Retention/NDR): Measures revenue retained from existing customers including expansions, contractions, and churn. Formula: NRR = (Starting ARR + Expansions − Contractions − Churn) / Starting ARR × 100. NRR > 100%: Net expansion (customers spending more). NRR < 100%: Net contraction. Best-in-class SaaS: 120%+ NRR (meaning even with some churn, revenue grows from existing base)."
+            },
+            {
+              q: "What is LTV/CAC ratio?",
+              a: "CAC (Customer Acquisition Cost): Total sales & marketing spend / new customers acquired. LTV (Lifetime Value): (Average Revenue Per Account × Gross Margin) / Churn Rate. LTV/CAC Ratio: Measures the return on customer acquisition investment. >3x is generally considered healthy. <1x means you're spending more to acquire a customer than they're worth. Payback Period: CAC / (Monthly Revenue × Gross Margin) – should be <12-18 months."
+            }
+          ]
+        },
+        {
+          id: "fig",
+          name: "Financial Institutions (FIG)",
+          difficulty: "Advanced",
+          frequency: "Medium",
+          relevantRoles: ["investment-banking", "equity-research"],
+          questions: [
+            {
+              q: "Why are financial institutions valued differently?",
+              a: "Banks and insurance companies have unique structures: Debt is part of their operating model (deposits), not just financing. Revenue is Net Interest Income (NII), not traditional operating revenue. Can't use EV/EBITDA because debt is not separable from operations. Instead, use equity-based multiples: Price/Book Value (P/BV), Price/Tangible Book Value (P/TBV), Price/Earnings (P/E). DCF uses dividend discount model (DDM) or excess return models."
+            },
+            {
+              q: "What are key bank metrics?",
+              a: "1. Net Interest Margin (NIM): (Interest Income − Interest Expense) / Average Earning Assets. 2. Return on Equity (ROE): Net Income / Shareholders' Equity. Target: 10%+. 3. Return on Assets (ROA): Net Income / Total Assets. Target: 1%+. 4. CET1 Ratio: Core Equity Tier 1 / Risk-Weighted Assets. Regulatory capital requirement. 5. Efficiency Ratio: Non-Interest Expense / Revenue. Lower is better. 6. Non-Performing Loans (NPL) Ratio: Problem loans as % of total loans. 7. Loan Loss Provisions: Reserves for expected credit losses."
+            }
+          ]
+        },
+        {
+          id: "healthcare",
+          name: "Healthcare",
+          difficulty: "Intermediate",
+          frequency: "Medium",
+          relevantRoles: ["investment-banking", "equity-research"],
+          questions: [
+            {
+              q: "What are the key sectors within healthcare?",
+              a: "1. Pharmaceuticals (Large Cap Pharma): Patent-protected drugs, pricing power. R&D heavy. 2. Biotech: Pre-revenue companies with pipeline drugs. Binary risk around FDA approvals. 3. Medical Devices: FDA-regulated devices. Reimbursement risk. 4. Healthcare Services: Hospitals, ASCs, home health, long-term care. Volume-driven. 5. Managed Care/Insurance: Health plans (HMOs, PPOs). Key metric: Medical Loss Ratio (MLR). 6. Diagnostics/Life Sciences Tools: Tests, instruments, reagents."
+            },
+            {
+              q: "What are the unique valuation considerations for biotech?",
+              a: "Pre-revenue biotech companies cannot use traditional EBITDA multiples. Use: 1. Risk-Adjusted NPV (rNPV): NPV of each drug candidate × probability of success at each clinical stage. Sum across pipeline. 2. EV/Pipeline Stage: Assign value based on pipeline stage (Phase 1, 2, 3, approved). 3. Comparable Transaction Multiples: Precedent biotech M&A. Key risk factors: FDA approval probability, patent expiry, competitive drugs, pricing/reimbursement."
+            }
+          ]
+        },
+        {
+          id: "consumer",
+          name: "Consumer Products & Retail",
+          difficulty: "Intermediate",
+          frequency: "Medium",
+          relevantRoles: ["investment-banking", "equity-research"],
+          questions: [
+            {
+              q: "What are the key metrics for retail companies?",
+              a: "1. Same-Store Sales (SSS) / Comparable Store Sales: Revenue growth from existing stores (excludes new store openings). Most important retail metric. 2. Sales per Square Foot: Efficiency metric for physical retail. 3. Gross Margin: Usually reported as merchandise margin. 4. Inventory Turnover: How quickly inventory sells. 5. E-commerce Penetration: % of sales online. 6. Number of Store Locations / Net Openings. 7. Average Transaction Value and traffic count."
+            },
+            {
+              q: "How has e-commerce changed the retail valuation landscape?",
+              a: "E-commerce has forced brick-and-mortar retailers to invest heavily in omnichannel capabilities, squeezing margins. Valuations: Traditional retailers trade at lower EV/EBITDA multiples due to secular headwinds. E-commerce pure-plays trade at premium revenue multiples. Physical store leases are now liabilities (IFRS 16/ASC 842). Key themes: Buy Online Pick Up In Store (BOPIS), same-day delivery, subscription models, direct-to-consumer (DTC)."
+            }
+          ]
+        },
+        {
+          id: "restructuring",
+          name: "Financial Restructuring",
+          difficulty: "Advanced",
+          frequency: "Medium",
+          relevantRoles: ["investment-banking"],
+          questions: [
+            {
+              q: "What is a financial restructuring?",
+              a: "Financial restructuring involves reorganizing a company's debt/equity obligations to allow it to continue operations. Types: Out-of-Court: Negotiated directly with creditors. Faster, cheaper, avoids stigma. Requires creditor consent. In-Court (Chapter 11 Bankruptcy): Formal legal process. Automatic stay protects company from creditors. Allows rejection of contracts/leases. Requires majority creditor approval (plan of reorganization). Chapter 7: Liquidation. Chapter 11: Reorganization."
+            },
+            {
+              q: "What is the difference between a debtor and creditor advisor in restructuring?",
+              a: "Debtor Advisor: Advises the company in financial distress. Goal: Maximize recovery for the company and preserve enterprise value. Identify operational improvements, negotiate with creditors, develop restructuring plan. Creditor Advisor: Advises a creditor class (secured lenders, bondholders). Goal: Maximize recovery for their creditor class. Analyze recovery rates, negotiate terms of restructuring plan, potentially take control of company."
+            },
+            {
+              q: "What is the absolute priority rule?",
+              a: "In bankruptcy, the absolute priority rule (APR) dictates the order in which claims are satisfied: 1. Secured creditors (first lien, then second lien). 2. Senior unsecured creditors. 3. Subordinated/junior creditors. 4. Preferred equity holders. 5. Common equity holders (usually wiped out). Recovery rates depend on the company's total enterprise value relative to total claims. Parties 'in the money' receive full recovery or equity; those 'out of the money' may receive nothing."
+            }
+          ]
+        },
+        {
+          id: "real-estate",
+          name: "Real Estate (REIT & REPE)",
+          difficulty: "Advanced",
+          frequency: "Medium",
+          relevantRoles: ["investment-banking", "equity-research", "private-equity"],
+          questions: [
+            {
+              q: "What is a REIT and how is it structured?",
+              a: "REIT (Real Estate Investment Trust): A company that owns income-producing real estate assets. To qualify as a REIT: Must distribute at least 90% of taxable income as dividends. At least 75% of assets must be real estate-related. At least 75% of revenue must come from real estate. Types: Equity REIT (owns properties), Mortgage REIT (owns mortgages), Hybrid. Key metrics: FFO (Funds from Operations), AFFO, Cap Rate, NOI."
+            },
+            {
+              q: "What is FFO and why is it used for REITs?",
+              a: "FFO (Funds from Operations) = Net Income + Depreciation/Amortization − Gains on Property Sales. Used because GAAP net income is misleading for REITs – real estate appreciates but GAAP requires straight-line depreciation. FFO adds back depreciation to show true recurring cash earnings. AFFO (Adjusted FFO) further subtracts recurring capex (maintenance) and straight-line rent adjustments. REITs are valued on Price/FFO and EV/EBITDA multiples."
+            },
+            {
+              q: "What is a capitalization rate (cap rate)?",
+              a: "Cap Rate = NOI (Net Operating Income) / Property Value. Used to assess real estate returns and implied property values. Higher cap rate = lower property value or higher expected return (riskier asset). Lower cap rate = higher property value (premium asset). Example: A property with $1M NOI and 5% cap rate is valued at $20M. Cap rates vary by property type (office, retail, industrial, residential) and location."
+            }
+          ]
+        },
+        {
+          id: "oil-gas",
+          name: "Oil & Gas (O&G)",
+          difficulty: "Advanced",
+          frequency: "Medium",
+          relevantRoles: ["investment-banking", "equity-research"],
+          questions: [
+            {
+              q: "What are the key O&G sector-specific metrics?",
+              a: "1. Proved Reserves: Volumes of oil/gas with 90%+ probability of being produced. 2. Reserve Life Index (RLI): Reserves / Annual Production. 3. EV/EBITDAX (adds back exploration expense). 4. EV/Proved Reserves: $ per BOE. 5. NAV (Net Asset Value): PV10 of proved reserves minus net debt. 6. Production Growth (BOE/day): Barrels of Oil Equivalent per day. 7. F&D Cost (Finding & Development Cost): $ spent to add one BOE. 8. Netback: Revenue per BOE minus royalties, production costs."
+            },
+            {
+              q: "What is the difference between upstream, midstream, and downstream?",
+              a: "Upstream: Exploration and production (E&P). Drilling for oil/gas. High capital intensity and commodity price risk. Midstream: Transportation and storage. Pipelines, terminals, storage. Fee-based revenue, more stable. Often structured as MLPs. Downstream: Refining and retail. Convert crude oil into refined products (gasoline, diesel). Refining margin ('crack spread') is key driver. Integrated Majors (ExxonMobil, Shell) operate across all three segments."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      id: "behavioral",
+      name: "Behavioral Questions",
+      icon: "🎯",
+      color: "#EC4899",
+      description: "Personal background, situational questions, and firm-specific questions",
+      topics: [
+        {
+          id: "personal-background",
+          name: "Personal Background Questions",
+          difficulty: "Beginner",
+          frequency: "Very High",
+          relevantRoles: ["investment-banking", "equity-research", "private-equity", "sales-trading", "corporate-finance"],
+          questions: [
+            {
+              q: "Tell me about yourself / Walk me through your resume.",
+              a: "Best approach: Tell a cohesive, forward-looking story. Structure: (1) Brief background (where you're from, school), (2) Key experiences in reverse chronological order with relevant highlights, (3) Why those experiences led you to this role/firm, (4) Why you're excited about this opportunity. Keep it under 2 minutes. Connect the dots – show intentionality. End with why THIS role at THIS firm right now."
+            },
+            {
+              q: "Why investment banking?",
+              a: "Mention: (1) Steep learning curve and exposure to complex transactions early in career. (2) Breadth of industries and deal types. (3) Working with senior executives and sophisticated deal teams. (4) Developing strong financial modeling and analytical skills. (5) Platform to transition to buy-side or pursue entrepreneurship. Avoid clichés – be specific about what excites you. Reference specific deals, sectors, or experiences that connect to IB."
+            },
+            {
+              q: "Why this firm specifically?",
+              a: "Research required: (1) Culture – what distinguishes their culture from competitors? (2) Specific group/sector strength – are you targeting their TMT group, M&A team? (3) Recent deals they've worked on that excite you. (4) Alumni you've spoken with and what they shared. (5) Geographic focus or deal size sweet spot that matches your interests. Generic answers are a red flag. Show you've done your homework."
+            },
+            {
+              q: "What is your greatest weakness?",
+              a: "Best approach: Choose a REAL weakness (not 'I work too hard'). Show self-awareness AND active steps you've taken to improve. Structure: (1) Name the weakness honestly, (2) Explain the impact/why it matters, (3) Describe concrete steps you've taken to address it, (4) Evidence of improvement. Example: 'I've historically struggled with delegating work, preferring to control outcomes. I've been consciously practicing this in [X] context and have seen improvements in team effectiveness.'"
+            },
+            {
+              q: "Where do you see yourself in 5-10 years?",
+              a: "For junior roles, acceptable to say you want to develop strong financial skills in banking, potentially transition to buy-side or pursue your MBA, and eventually [specific long-term goal]. Be honest but show ambition. If applying to PE-heavy bank: showing interest in the buy-side is fine. If applying to a coverage group: show long-term interest in that sector. Avoid 'I want your job' – that's cliché. Show intellectual curiosity and a desire to build expertise."
+            }
+          ]
+        },
+        {
+          id: "situational",
+          name: "Situational & Past Experiences",
+          difficulty: "Intermediate",
+          frequency: "High",
+          relevantRoles: ["investment-banking", "equity-research", "private-equity", "sales-trading"],
+          questions: [
+            {
+              q: "Tell me about a time you had a conflict with a team member.",
+              a: "STAR method: Situation, Task, Action, Result. Situate the context, describe your specific role, explain concrete actions you took (focus on YOUR behavior, not theirs), quantify the positive outcome. Key principles: Show maturity and professionalism. Don't throw anyone under the bus. Demonstrate that you resolved it constructively. Show you can influence without authority."
+            },
+            {
+              q: "Tell me about a time you had to work under tight deadlines.",
+              a: "STAR method: Choose a real example with meaningful stakes. Describe: What was the deadline, what were the competing priorities, how did you prioritize, what did you sacrifice (less important tasks), how did you communicate with stakeholders, what was the outcome. Banking context: Show you're comfortable with demanding hours and can maintain quality under pressure."
+            },
+            {
+              q: "Tell me about a failure and what you learned from it.",
+              a: "Show intellectual honesty – don't minimize the failure or externalize blame. Structure: (1) What happened, (2) Your role in it, (3) What you would have done differently, (4) What you actually did to correct or learn from it, (5) How it changed your approach going forward. Firms want to hire self-aware individuals who can process and learn from mistakes. Avoid catastrophic examples or anything that reveals poor ethics."
+            }
+          ]
+        },
+        {
+          id: "elevator-test",
+          name: "Elevator Test Questions",
+          difficulty: "Beginner",
+          frequency: "Medium",
+          relevantRoles: ["investment-banking", "equity-research", "private-equity"],
+          questions: [
+            {
+              q: "What makes a good investment banker?",
+              a: "1. Intellectual curiosity – obsession with understanding how businesses work. 2. Attention to detail – zero tolerance for errors in client materials. 3. Work ethic – commitment to delivering excellent work regardless of hours. 4. Client service mindset – anticipating client needs before they're articulated. 5. Communication – ability to synthesize complex information into clear, concise presentations. 6. Resilience – ability to handle high pressure and bounce back from setbacks. 7. Teamwork – collaborative, humble, helps others succeed."
+            },
+            {
+              q: "Do you have any questions for me?",
+              a: "Always have 2-3 thoughtful questions. Good questions: 'What has surprised you most about working here?' 'What does success look like for someone in this role in the first year?' 'How has your career evolved since joining?' 'What's the culture like during deal execution vs. quieter periods?' Avoid: Questions easily answered on their website. Questions about compensation (at this stage). Generic questions that show you haven't thought about it."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+};
+
+// Role profiles for JD matching
+const ROLE_PROFILES = {
+  "investment-banking": {
+    name: "Investment Banking Analyst/Associate",
+    keywords: ["investment banking", "M&A", "capital markets", "financial modeling", "DCF", "LBO", "pitch book", "deal", "advisory", "analyst", "associate", "IBD", "coverage", "ECM", "DCM", "leveraged finance"],
+    primarySubjects: ["accounting", "valuation", "ma"],
+    secondarySubjects: ["lbo", "capital-markets"],
+    description: "Core IB role requiring deep accounting, valuation, and M&A knowledge"
+  },
+  "private-equity": {
+    name: "Private Equity Associate",
+    keywords: ["private equity", "PE", "buyout", "LBO", "portfolio company", "value creation", "fund", "GP", "LP", "returns", "MOIC", "IRR", "carry"],
+    primarySubjects: ["lbo", "valuation", "ma"],
+    secondarySubjects: ["accounting", "capital-markets"],
+    description: "PE role with heavy focus on LBO modeling, deal sourcing, and value creation"
+  },
+  "equity-research": {
+    name: "Equity Research Analyst",
+    keywords: ["equity research", "analyst", "stock", "coverage", "rating", "price target", "buy", "sell", "hold", "sector", "earnings", "estimates", "model"],
+    primarySubjects: ["valuation", "accounting", "industry-specific"],
+    secondarySubjects: ["capital-markets"],
+    description: "Research role requiring deep sector expertise and valuation skills"
+  },
+  "sales-trading": {
+    name: "Sales & Trading",
+    keywords: ["sales", "trading", "markets", "execution", "flow", "risk", "market making", "equities", "fixed income", "derivatives", "structured products"],
+    primarySubjects: ["capital-markets"],
+    secondarySubjects: ["valuation"],
+    description: "Markets role requiring current market knowledge and product expertise"
+  },
+  "corporate-finance": {
+    name: "Corporate Finance / FP&A",
+    keywords: ["corporate finance", "FP&A", "treasury", "financial planning", "analysis", "budgeting", "forecasting", "CAPEX", "working capital"],
+    primarySubjects: ["accounting", "valuation"],
+    secondarySubjects: ["capital-markets"],
+    description: "In-house finance role requiring strong accounting and analytical skills"
+  },
+  "credit-analysis": {
+    name: "Credit Analyst",
+    keywords: ["credit", "lending", "underwriting", "loan", "bond", "fixed income", "credit rating", "leverage", "debt", "covenant", "CLO"],
+    primarySubjects: ["capital-markets", "accounting"],
+    secondarySubjects: ["lbo", "valuation"],
+    description: "Credit role focusing on debt markets and creditworthiness analysis"
+  },
+  "hedge-fund": {
+    name: "Hedge Fund Analyst",
+    keywords: ["hedge fund", "long short", "macro", "quant", "systematic", "event driven", "catalyst", "alpha", "portfolio"],
+    primarySubjects: ["capital-markets", "valuation"],
+    secondarySubjects: ["industry-specific"],
+    description: "HF role requiring market knowledge and investment thesis construction"
+  },
+  "accounting": {
+    name: "Accounting / Audit",
+    keywords: ["accounting", "CPA", "audit", "GAAP", "IFRS", "tax", "financial reporting", "controller", "CFO"],
+    primarySubjects: ["accounting"],
+    secondarySubjects: [],
+    description: "Accounting/audit role with heavy GAAP/IFRS focus"
+  }
+};
+
+// Daily trivia questions pool
+const TRIVIA_POOL = [
+  {
+    q: "What does EBITDA stand for?",
+    options: ["Earnings Before Interest, Taxes, Depreciation & Amortization", "Earnings Before Income Tax, Dividends & Accruals", "Equity-Based Income Tax Deductions & Adjustments"],
+    answer: 0,
+    category: "Finance Basics",
+    explanation: "EBITDA = Earnings Before Interest, Taxes, Depreciation & Amortization. It's the most widely used profitability metric for valuation comparisons."
+  },
+  {
+    q: "An inverted yield curve (short-term rates > long-term rates) historically predicts what?",
+    options: ["A stock market rally", "An economic recession", "Inflation acceleration"],
+    answer: 1,
+    category: "Markets",
+    explanation: "An inverted yield curve has preceded most US recessions. The 2-10 year spread is most closely watched by economists and investors."
+  },
+  {
+    q: "In an LBO, what happens to equity returns if the entry multiple equals the exit multiple?",
+    options: ["Returns are zero", "Returns are generated purely from debt paydown", "The PE firm loses money"],
+    answer: 1,
+    category: "LBO",
+    explanation: "If multiples are flat, IRR comes entirely from debt paydown (reducing debt increases equity value) and any EBITDA growth."
+  },
+  {
+    q: "What is the primary reason a DCF uses WACC as the discount rate?",
+    options: ["It's the easiest rate to calculate", "It represents the blended required return of all capital providers", "It equals the risk-free rate plus a premium"],
+    answer: 1,
+    category: "Valuation",
+    explanation: "WACC is used because we're discounting Unlevered FCF (available to ALL capital providers), so we use the blended required return of debt and equity holders."
+  },
+  {
+    q: "If a company's accounts receivable increases by $10M, what happens to the cash flow statement?",
+    options: ["Cash increases by $10M", "Cash decreases by $10M", "No impact on cash flow"],
+    answer: 1,
+    category: "Accounting",
+    explanation: "An increase in A/R means sales were made on credit (not collected as cash). On the CFS (indirect method), this appears as a -$10M adjustment to operating cash flow."
+  },
+  {
+    q: "What is the 'Rule of 40' used to evaluate?",
+    options: ["Private equity fund returns", "SaaS company health", "Bond covenant compliance"],
+    answer: 1,
+    category: "Industry",
+    explanation: "Rule of 40 = Revenue Growth % + FCF Margin %. For healthy SaaS companies, the sum should exceed 40%. It balances growth and profitability."
+  },
+  {
+    q: "What does a P/E ratio of 20x mean?",
+    options: ["Investors pay $20 for every $1 of earnings", "The company grows at 20% annually", "The stock is 20% undervalued"],
+    answer: 0,
+    category: "Valuation",
+    explanation: "P/E = Price per Share / Earnings per Share. A P/E of 20x means investors pay $20 for each $1 of annual earnings. Higher P/E often reflects higher growth expectations."
+  },
+  {
+    q: "In M&A, what is a 'fairness opinion'?",
+    options: ["A buyer's assessment that the target is properly managed", "An independent bank's assessment that deal price is fair to shareholders", "A regulatory body's approval of the transaction"],
+    answer: 1,
+    category: "M&A",
+    explanation: "A fairness opinion is issued by an independent investment bank to the board of directors, providing their professional judgment that the deal consideration is fair to shareholders."
+  },
+  {
+    q: "What is goodwill on the balance sheet?",
+    options: ["The company's brand value and reputation", "The excess of purchase price over fair value of net assets in an acquisition", "Long-term customer relationships"],
+    answer: 1,
+    category: "Accounting",
+    explanation: "Goodwill arises in acquisitions: Goodwill = Purchase Price - Fair Market Value of Net Assets. Under GAAP, goodwill is not amortized but tested annually for impairment."
+  },
+  {
+    q: "What is the difference between beta and alpha in investing?",
+    options: ["Beta measures market risk; alpha measures excess return over benchmark", "Beta measures returns; alpha measures risk", "They are the same concept"],
+    answer: 0,
+    category: "Markets",
+    explanation: "Beta measures systematic (market) risk. Alpha measures excess return above the benchmark, representing a manager's value-added above market returns."
+  },
+  {
+    q: "If a deal is accretive to EPS, what does that mean?",
+    options: ["The deal was expensive", "Combined EPS after the deal is higher than the acquirer's standalone EPS", "The target company is growing faster"],
+    answer: 1,
+    category: "M&A",
+    explanation: "Accretive: Pro-forma combined EPS > standalone acquirer EPS. Dilutive: Pro-forma combined EPS < standalone acquirer EPS. EPS impact is a key metric for public company M&A."
+  },
+  {
+    q: "What is working capital?",
+    options: ["Total assets minus total liabilities", "Current assets minus current liabilities", "Cash and cash equivalents"],
+    answer: 1,
+    category: "Accounting",
+    explanation: "Working Capital = Current Assets - Current Liabilities. It measures short-term liquidity. Net Working Capital (NWC) excludes cash and short-term debt (non-operational items)."
+  }
+];
+
+// Finance news topics for the daily knowledge tab
+const KNOWLEDGE_TOPICS = [
+  {
+    title: "Federal Reserve & Monetary Policy",
+    summary: "The Fed sets interest rates through the Federal Funds Rate target. Rate hikes tighten financial conditions (expensive borrowing, lower valuations). Rate cuts ease conditions. Watch: FOMC meetings, inflation data (CPI, PCE), employment data (NFP).",
+    category: "Macro",
+    relevance: "High"
+  },
+  {
+    title: "Credit Spreads & High Yield Markets",
+    summary: "Credit spreads represent the yield premium over Treasuries. Tight spreads indicate low default risk perception; wide spreads indicate stress. The HY spread (ICE BofA HY Index) is a key risk barometer. Spread widening often precedes economic downturns.",
+    category: "Fixed Income",
+    relevance: "High"
+  },
+  {
+    title: "AI/Tech M&A Wave",
+    summary: "AI capabilities are driving significant M&A across technology, healthcare, and financial services. Key themes: talent acquisition, data moats, infrastructure buildout. Regulatory scrutiny (FTC, DOJ, EU) is increasing for tech mergers.",
+    category: "M&A",
+    relevance: "High"
+  },
+  {
+    title: "Private Credit Boom",
+    summary: "Direct lending by non-bank lenders has surged as banks pulled back from leveraged lending. Private credit funds (Ares, Apollo, Blackstone Credit) now compete with syndicated loan markets. Higher rates have made private credit attractive for investors seeking yield.",
+    category: "Credit",
+    relevance: "High"
+  },
+  {
+    title: "SPACs and Alternative IPO Structures",
+    summary: "SPACs (Special Purpose Acquisition Companies) surged in 2020-2021 and have since cooled due to poor performance. Traditional IPOs remain dominant. Direct listings and dual-track processes (IPO + M&A) are increasingly common.",
+    category: "ECM",
+    relevance: "Medium"
+  },
+  {
+    title: "ESG in Finance",
+    summary: "Environmental, Social, and Governance factors increasingly influence investment decisions and corporate strategy. Green bonds, sustainability-linked loans. PE firms incorporating ESG into due diligence. Regulatory pressure (SEC climate disclosure rules). ESG data providers: MSCI, Sustainalytics.",
+    category: "Trends",
+    relevance: "Medium"
+  }
+];
+
+</script>
+<script>
+// ===== STATE =====
+let state = {
+  currentPage: 'dashboard',
+  currentSubjectId: null,
+  currentTopicId: null,
+  expandedSubjects: {},
+  reviewed: JSON.parse(localStorage.getItem('reviewed') || '{}'),
+  ratings: JSON.parse(localStorage.getItem('ratings') || '{}'),
+  streak: parseInt(localStorage.getItem('streak') || '0'),
+  practiceQueue: [],
+  practiceIndex: 0,
+  sessionStats: { easy: 0, medium: 0, hard: 0 },
+  triviaIndex: 0,
+  triviaAnswered: {},
+  searchQuery: ''
+};
+
+// ===== INIT =====
+function init() {
+  buildSidebar();
+  buildDashboard();
+  buildPracticeSelects();
+  setupPractice();
+  buildDailyPage();
+  updateStats();
+}
+
+// ===== NAVIGATION =====
+function showPage(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  event && event.target.classList.add('active');
+  document.getElementById('sidebar').style.display = page === 'questions' ? 'flex' : 'none';
+  state.currentPage = page;
+}
+
+// ===== SIDEBAR =====
+function buildSidebar() {
+  const container = document.getElementById('sidebar-content');
+  container.innerHTML = '';
+  INTERVIEW_DATA.subjects.forEach(subject => {
+    const topicCount = subject.topics.reduce((acc, t) => acc + t.questions.length, 0);
+    const group = document.createElement('div');
+    group.className = 'subject-group';
+    const header = document.createElement('div');
+    header.className = `subject-header ${state.expandedSubjects[subject.id] ? 'expanded' : ''}`;
+    header.innerHTML = `<span class="subject-icon">${subject.icon}</span><span class="subject-name">${subject.name}</span><span class="subject-count">${topicCount}Q</span><span class="subject-chevron">▶</span>`;
+    header.onclick = () => toggleSubject(subject.id, header);
+    const topicsList = document.createElement('div');
+    topicsList.className = 'topics-list';
+    topicsList.id = 'topics-' + subject.id;
+    topicsList.style.display = state.expandedSubjects[subject.id] ? 'block' : 'none';
+    subject.topics.forEach(topic => {
+      const item = document.createElement('div');
+      item.className = `topic-item ${state.currentTopicId === topic.id ? 'active' : ''}`;
+      item.id = 'topic-nav-' + topic.id;
+      item.innerHTML = `<span class="topic-dot"></span><span>${topic.name}</span>`;
+      item.onclick = () => selectTopic(subject.id, topic.id);
+      topicsList.appendChild(item);
+    });
+    group.appendChild(header);
+    group.appendChild(topicsList);
+    container.appendChild(group);
+  });
+}
+
+function toggleSubject(subjectId, header) {
+  state.expandedSubjects[subjectId] = !state.expandedSubjects[subjectId];
+  header.classList.toggle('expanded');
+  const list = document.getElementById('topics-' + subjectId);
+  list.style.display = state.expandedSubjects[subjectId] ? 'block' : 'none';
+}
+
+function selectTopic(subjectId, topicId) {
+  state.currentSubjectId = subjectId;
+  state.currentTopicId = topicId;
+  document.querySelectorAll('.topic-item').forEach(el => el.classList.remove('active'));
+  const navItem = document.getElementById('topic-nav-' + topicId);
+  if (navItem) navItem.classList.add('active');
+  renderQuestions(subjectId, topicId);
+  if (state.currentPage !== 'questions') {
+    document.querySelectorAll('.nav-tab')[1].click();
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.nav-tab')[1].classList.add('active');
+  }
+}
+
+// ===== QUESTION RENDERER =====
+function renderQuestions(subjectId, topicId) {
+  const subject = INTERVIEW_DATA.subjects.find(s => s.id === subjectId);
+  const topic = subject ? subject.topics.find(t => t.id === topicId) : null;
+  const content = document.getElementById('questions-content');
+  if (!topic) { content.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🔍</div><div class="empty-state-title">Topic not found</div></div>'; return; }
+  
+  let qs = topic.questions;
+  if (state.searchQuery) {
+    const q = state.searchQuery.toLowerCase();
+    qs = qs.filter(x => x.q.toLowerCase().includes(q) || x.a.toLowerCase().includes(q));
+  }
+
+  content.innerHTML = `
+    <div class="topic-header">
+      <div style="font-size:13px;color:var(--text-secondary);margin-bottom:6px;">${subject.icon} ${subject.name}</div>
+      <div class="topic-title">${topic.name}</div>
+      <div class="topic-meta">
+        <span class="diff-badge diff-${topic.difficulty}">${topic.difficulty}</span>
+        <span class="freq-badge">📊 ${topic.frequency} Frequency</span>
+        <span style="font-size:13px;color:var(--text-secondary);">${qs.length} questions</span>
+      </div>
+    </div>
+    <div id="q-list"></div>
+  `;
+
+  const qList = document.getElementById('q-list');
+  qs.forEach((q, i) => {
+    const key = `${topicId}-${i}`;
+    const isReviewed = state.reviewed[key];
+    const card = document.createElement('div');
+    card.className = 'question-card';
+    card.id = 'qcard-' + i;
+    card.innerHTML = `
+      <div class="question-header" onclick="toggleQuestion(${i}, '${key}')">
+        <span class="q-number">${isReviewed ? '✅' : (i+1)}</span>
+        <span class="q-text">${q.q}</span>
+        <span class="q-toggle">▼</span>
+      </div>
+      <div class="answer-section">
+        <div class="answer-content">${formatAnswer(q.a)}</div>
+      </div>
+    `;
+    qList.appendChild(card);
+  });
+}
+
+function formatAnswer(text) {
+  return text
+    .replace(/\b(Formula|Note|Key|Example|Types|Steps|Important):/g, '<strong>$1:</strong>')
+    .replace(/\n/g, '<br>');
+}
+
+function toggleQuestion(idx, key) {
+  const card = document.getElementById('qcard-' + idx);
+  const wasOpen = card.classList.contains('open');
+  card.classList.toggle('open');
+  if (!wasOpen && !state.reviewed[key]) {
+    state.reviewed[key] = true;
+    localStorage.setItem('reviewed', JSON.stringify(state.reviewed));
+    updateStats();
+    // Update badge
+    const qnum = card.querySelector('.q-number');
+    if (qnum) qnum.textContent = '✅';
+  }
+}
+
+// ===== SEARCH =====
+function filterQuestions() {
+  state.searchQuery = document.getElementById('search-input').value;
+  if (state.currentTopicId && state.currentSubjectId) {
+    renderQuestions(state.currentSubjectId, state.currentTopicId);
+  }
+}
+
+// ===== DASHBOARD =====
+function buildDashboard() {
+  const container = document.getElementById('dashboard-subjects');
+  INTERVIEW_DATA.subjects.forEach(subject => {
+    const totalQ = subject.topics.reduce((acc, t) => acc + t.questions.length, 0);
+    const reviewedQ = subject.topics.reduce((acc, t) => {
+      return acc + t.questions.filter((q, i) => state.reviewed[`${t.id}-${i}`]).length;
+    }, 0);
+    const pct = Math.round((reviewedQ / totalQ) * 100);
+    const card = document.createElement('div');
+    card.className = 'subject-card';
+    card.style.borderLeft = `4px solid ${subject.color}`;
+    card.innerHTML = `
+      <div class="subject-card-header">
+        <span class="subject-card-icon">${subject.icon}</span>
+        <div>
+          <div class="subject-card-name">${subject.name}</div>
+          <div style="font-size:11px;color:var(--text-secondary);">${subject.topics.length} topics · ${totalQ} questions</div>
+        </div>
+      </div>
+      <div class="subject-card-desc">${subject.description}</div>
+      <div class="subject-card-meta">
+        ${subject.topics.map(t => `<span class="meta-pill">${t.name}</span>`).slice(0,3).join('')}
+        ${subject.topics.length > 3 ? `<span class="meta-pill">+${subject.topics.length-3} more</span>` : ''}
+      </div>
+      <div class="progress-bar"><div class="progress-fill" style="width:${pct}%;background:${subject.color};"></div></div>
+      <div style="font-size:11px;color:var(--text-secondary);margin-top:6px;">${reviewedQ}/${totalQ} reviewed (${pct}%)</div>
+    `;
+    card.onclick = () => {
+      state.expandedSubjects[subject.id] = true;
+      buildSidebar();
+      selectTopic(subject.id, subject.topics[0].id);
+      document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.nav-tab')[1].classList.add('active');
+      showPage('questions');
+    };
+    container.appendChild(card);
+  });
+}
+
+function updateStats() {
+  let totalQ = 0, totalReviewed = 0;
+  INTERVIEW_DATA.subjects.forEach(s => {
+    s.topics.forEach(t => {
+      totalQ += t.questions.length;
+      t.questions.forEach((q, i) => {
+        if (state.reviewed[`${t.id}-${i}`]) totalReviewed++;
+      });
+    });
+  });
+  document.getElementById('stat-total-q').textContent = totalQ;
+  document.getElementById('stat-reviewed').textContent = totalReviewed;
+  document.getElementById('stat-subjects').textContent = INTERVIEW_DATA.subjects.length;
+  document.getElementById('stat-streak').textContent = state.streak;
+  const pct = Math.round((totalReviewed / totalQ) * 100);
+  document.getElementById('progress-badge').textContent = pct + '% Done';
+}
+
+// ===== PRACTICE MODE =====
+function buildPracticeSelects() {
+  const sel = document.getElementById('practice-subject-select');
+  INTERVIEW_DATA.subjects.forEach(s => {
+    const opt = document.createElement('option');
+    opt.value = s.id;
+    opt.textContent = s.icon + ' ' + s.name;
+    sel.appendChild(opt);
+  });
+}
+
+function getAllQuestions(subjectFilter, diffFilter) {
+  let all = [];
+  INTERVIEW_DATA.subjects.forEach(s => {
+    if (subjectFilter !== 'all' && s.id !== subjectFilter) return;
+    s.topics.forEach(t => {
+      if (diffFilter !== 'all' && t.difficulty !== diffFilter) return;
+      t.questions.forEach((q, i) => {
+        all.push({ ...q, topicId: t.id, topicName: t.name, subjectName: s.name, idx: i });
+      });
+    });
+  });
+  return all;
+}
+
+function shuffleArray(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function setupPractice() {
+  const sub = document.getElementById('practice-subject-select').value;
+  const diff = document.getElementById('practice-difficulty-select').value;
+  state.practiceQueue = shuffleArray(getAllQuestions(sub, diff));
+  state.practiceIndex = 0;
+  state.sessionStats = { easy: 0, medium: 0, hard: 0 };
+  updateSessionStats();
+  showPracticeQuestion();
+}
+
+function showPracticeQuestion() {
+  const q = state.practiceQueue[state.practiceIndex];
+  if (!q) return;
+  document.getElementById('practice-q').textContent = q.q;
+  document.getElementById('practice-a').innerHTML = formatAnswer(q.a);
+  document.getElementById('practice-answer').classList.remove('show');
+  document.getElementById('practice-progress').textContent = `Question ${state.practiceIndex + 1} of ${state.practiceQueue.length} · ${q.subjectName} → ${q.topicName}`;
+}
+
+function revealAnswer() {
+  document.getElementById('practice-answer').classList.add('show');
+  const key = `${state.practiceQueue[state.practiceIndex]?.topicId}-${state.practiceQueue[state.practiceIndex]?.idx}`;
+  if (!state.reviewed[key]) {
+    state.reviewed[key] = true;
+    localStorage.setItem('reviewed', JSON.stringify(state.reviewed));
+    updateStats();
+  }
+}
+
+function rateAndNext(rating) {
+  state.sessionStats[rating]++;
+  updateSessionStats();
+  nextQuestion();
+}
+
+function nextQuestion() {
+  if (state.practiceIndex < state.practiceQueue.length - 1) {
+    state.practiceIndex++;
+    showPracticeQuestion();
+  } else {
+    showToast('🎉 You\'ve completed all questions! Shuffling...');
+    setupPractice();
+  }
+}
+
+function prevQuestion() {
+  if (state.practiceIndex > 0) {
+    state.practiceIndex--;
+    showPracticeQuestion();
+  }
+}
+
+function updateSessionStats() {
+  document.getElementById('sess-easy').textContent = state.sessionStats.easy;
+  document.getElementById('sess-medium').textContent = state.sessionStats.medium;
+  document.getElementById('sess-hard').textContent = state.sessionStats.hard;
+}
+
+// ===== JD MATCHER =====
+function analyzeJD() {
+  const text = document.getElementById('jd-text').value.toLowerCase();
+  if (!text.trim()) { showToast('Please paste a job description first!'); return; }
+  
+  const resultsContainer = document.getElementById('jd-results');
+  
+  // Score each role
+  let roleScores = [];
+  Object.entries(ROLE_PROFILES).forEach(([roleId, role]) => {
+    let score = 0;
+    let matchedKeywords = [];
+    role.keywords.forEach(kw => {
+      if (text.includes(kw.toLowerCase())) {
+        score += 10;
+        matchedKeywords.push(kw);
+      }
+    });
+    if (score > 0) roleScores.push({ roleId, role, score, matchedKeywords });
+  });
+
+  roleScores.sort((a, b) => b.score - a.score);
+  if (roleScores.length === 0) {
+    resultsContainer.innerHTML = `<div class="empty-state"><div class="empty-state-icon">🤔</div><div class="empty-state-title">Could not detect role</div><p>Try pasting a more detailed job description with specific finance terms</p></div>`;
+    return;
+  }
+
+  const topRole = roleScores[0];
+  const maxScore = Math.min(topRole.score, 100);
+
+  // Build subject relevance
+  let subjectRelevance = {};
+  INTERVIEW_DATA.subjects.forEach(s => {
+    let rel = 0;
+    if (topRole.role.primarySubjects.includes(s.id)) rel = 90 + Math.floor(Math.random() * 10);
+    else if (topRole.role.secondarySubjects.includes(s.id)) rel = 60 + Math.floor(Math.random() * 15);
+    else rel = 20 + Math.floor(Math.random() * 20);
+    // Extra boost from keywords in JD
+    s.topics.forEach(t => {
+      t.questions.forEach(q => {
+        if (text.includes(t.name.toLowerCase())) rel = Math.min(rel + 10, 100);
+      });
+    });
+    subjectRelevance[s.id] = Math.min(rel, 100);
+  });
+
+  // Calculate topic-level probabilities
+  let html = `
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:20px;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+        <span style="font-size:28px;">🎯</span>
+        <div>
+          <div class="match-role-label">Detected Role: ${topRole.role.name}</div>
+          <div class="match-desc">${topRole.role.description}</div>
+        </div>
+        <div style="margin-left:auto;text-align:center;">
+          <div style="font-size:28px;font-weight:800;color:var(--accent2);">${maxScore}%</div>
+          <div style="font-size:11px;color:var(--text-secondary);">Match Score</div>
+        </div>
+      </div>
+      <div style="font-size:12px;color:var(--text-secondary);margin-bottom:8px;">Detected keywords:</div>
+      <div class="detected-keywords">
+        ${topRole.matchedKeywords.map(kw => `<span class="keyword-pill">${kw}</span>`).join('')}
+      </div>
+    </div>
+    <div style="font-size:16px;font-weight:700;margin-bottom:16px;">📊 Section Relevance & Interview Probability</div>
+    <div class="results-grid">
+  `;
+
+  INTERVIEW_DATA.subjects.forEach(subject => {
+    const rel = subjectRelevance[subject.id] || 50;
+    const relClass = rel >= 75 ? 'relevance-high' : rel >= 50 ? 'relevance-medium' : 'relevance-low';
+    const relLabel = rel >= 75 ? 'High Priority' : rel >= 50 ? 'Medium Priority' : 'Lower Priority';
+    
+    // Top topics for this subject
+    const topTopics = subject.topics.slice(0, 3);
+    
+    html += `
+      <div class="result-card">
+        <div class="result-header">
+          <span style="font-size:20px;">${subject.icon}</span>
+          <div style="flex:1;">
+            <div style="font-size:14px;font-weight:600;">${subject.name}</div>
+            <div style="font-size:11px;color:var(--text-secondary);margin-top:2px;">${relLabel}</div>
+            <div class="relevance-bar" style="margin-top:6px;"><div class="relevance-fill ${relClass}" style="width:${rel}%;"></div></div>
+          </div>
+          <div class="prob-score" style="color:${rel>=75?'#10b981':rel>=50?'#f59e0b':'#6b7280'};">${rel}%</div>
+        </div>
+        <div style="font-size:12px;color:var(--text-secondary);margin-bottom:8px;">Key topics to focus on:</div>
+        <div class="result-topics">
+          ${topTopics.map(t => `<span class="topic-pill" onclick="selectTopicFromResult('${subject.id}','${t.id}')">${t.name} →</span>`).join('')}
+        </div>
+      </div>
+    `;
+  });
+
+  html += '</div>';
+  resultsContainer.innerHTML = html;
+  showToast('✅ Analysis complete! Scroll down for results');
+}
+
+function selectTopicFromResult(subjectId, topicId) {
+  state.expandedSubjects[subjectId] = true;
+  buildSidebar();
+  selectTopic(subjectId, topicId);
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.nav-tab')[1].classList.add('active');
+  showPage('questions');
+}
+
+function clearJD() {
+  document.getElementById('jd-text').value = '';
+  document.getElementById('jd-results').innerHTML = '';
+}
+
+// ===== DAILY PAGE =====
+function buildDailyPage() {
+  buildTrivia();
+  buildKnowledgeItems();
+  buildKCCards();
+}
+
+function buildTrivia() {
+  renderTrivia();
+}
+
+function renderTrivia() {
+  const q = TRIVIA_POOL[state.triviaIndex];
+  document.getElementById('trivia-cat').textContent = q.category;
+  document.getElementById('trivia-q').textContent = q.q;
+  document.getElementById('trivia-counter').textContent = `${state.triviaIndex + 1} / ${TRIVIA_POOL.length}`;
+  
+  const optContainer = document.getElementById('trivia-options');
+  const expEl = document.getElementById('trivia-explanation');
+  expEl.style.display = 'none';
+  
+  optContainer.innerHTML = '';
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'trivia-opt';
+    btn.textContent = opt;
+    const answered = state.triviaAnswered[state.triviaIndex];
+    if (answered !== undefined) {
+      if (i === q.answer) btn.classList.add('correct');
+      else if (i === answered && i !== q.answer) btn.classList.add('wrong');
+      expEl.style.display = 'block';
+      expEl.textContent = '💡 ' + q.explanation;
+    } else {
+      btn.onclick = () => answerTrivia(i, q);
+    }
+    optContainer.appendChild(btn);
+  });
+}
+
+function answerTrivia(idx, q) {
+  state.triviaAnswered[state.triviaIndex] = idx;
+  renderTrivia();
+}
+
+function nextTrivia() {
+  state.triviaIndex = (state.triviaIndex + 1) % TRIVIA_POOL.length;
+  renderTrivia();
+}
+
+function prevTrivia() {
+  state.triviaIndex = (state.triviaIndex - 1 + TRIVIA_POOL.length) % TRIVIA_POOL.length;
+  renderTrivia();
+}
+
+function buildKnowledgeItems() {
+  const container = document.getElementById('knowledge-items');
+  KNOWLEDGE_TOPICS.forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'news-item';
+    div.innerHTML = `
+      <div class="news-item-cat">${item.category} · ${item.relevance} Relevance</div>
+      <div class="news-item-title">${item.title}</div>
+      <div class="news-item-summary">${item.summary}</div>
+    `;
+    container.appendChild(div);
+  });
+}
+
+function buildKCCards() {
+  const container = document.getElementById('kc-cards');
+  const checks = [
+    { icon: '📊', name: 'Accounting Basics', key: 'financial-statements', subject: 'accounting' },
+    { icon: '💰', name: 'Valuation Methods', key: 'dcf-valuation', subject: 'valuation' },
+    { icon: '🤝', name: 'M&A Concepts', key: 'ma-concepts', subject: 'ma' },
+    { icon: '🏦', name: 'LBO Fundamentals', key: 'pe-investing', subject: 'lbo' },
+    { icon: '📈', name: 'Capital Markets', key: 'market-knowledge', subject: 'capital-markets' },
+    { icon: '🎯', name: 'Behavioral Prep', key: 'personal-background', subject: 'behavioral' },
+    { icon: '💻', name: 'SaaS Metrics', key: 'saas', subject: 'industry-specific' },
+    { icon: '🏥', name: 'Healthcare IB', key: 'healthcare', subject: 'industry-specific' },
+  ];
+  checks.forEach(c => {
+    const card = document.createElement('div');
+    card.className = 'kc-card';
+    card.innerHTML = `<div class="kc-icon">${c.icon}</div><div class="kc-name">${c.name}</div><div class="kc-count">Click to study</div>`;
+    card.onclick = () => {
+      state.expandedSubjects[c.subject] = true;
+      buildSidebar();
+      selectTopic(c.subject, c.key);
+      document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.nav-tab')[1].classList.add('active');
+      showPage('questions');
+    };
+    container.appendChild(card);
+  });
+}
+
+// ===== UTILS =====
+function showToast(message) {
+  const toast = document.getElementById('toast');
+  toast.textContent = message;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+// Nav tabs click handler
+document.querySelectorAll('.nav-tab').forEach(tab => {
+  tab.addEventListener('click', function() {
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+
+// ===== START =====
+init();
+</script>
+</body>
+</html>
